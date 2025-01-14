@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>syllabus.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });
+</script>
+<h1 id="s%C3%ADlabo-del-curso-inteligencia-artificial">Sílabo del Curso: <strong>Inteligencia Artificial</strong></h1>
+<p><em>(32 Clases, 2 horas cada una, con 10 minutos de descanso. Las presentaciones finales se realizarán en otra fecha.)</em></p>
+<hr>
+<h2 id="%C3%ADndice-de-contenidos">ÍNDICE DE CONTENIDOS</h2>
+<ol>
+<li><a href="#objetivos-principales">Objetivos Principales</a></li>
+<li><a href="#estructura-del-curso">Estructura del Curso</a></li>
+<li><a href="#semana-1-introducci%C3%B3n-hist%C3%B3rica-y-gofai-clases-1-2">Semana 1: Introducción Histórica y GOFAI (Clases 1-2)</a></li>
+<li><a href="#semana-2-b%C3%BAsqueda-no-informada-e-informada-clases-3-4">Semana 2: Búsqueda No Informada e Informada (Clases 3-4)</a></li>
+<li><a href="#semana-3-representaci%C3%B3n-del-conocimiento-y-razonamiento-clases-5-6">Semana 3: Representación del Conocimiento y Razonamiento (Clases 5-6)</a></li>
+<li><a href="#semana-4-teor%C3%ADa-de-juegos-i---fundamentos-y-mecanismos-clases-7-8">Semana 4: Teoría de Juegos I - Fundamentos y Mecanismos (Clases 7-8)</a></li>
+<li><a href="#semana-5-teor%C3%ADa-de-juegos-ii---juegos-repetidos-y-torneos-de-axelrod-clases-9-10">Semana 5: Teoría de Juegos II - Juegos Repetidos y Torneos de Axelrod (Clases 9-10)</a></li>
+<li><a href="#semana-6-b%C3%BAsqueda-adversaria-minimax-y-alpha-beta-clases-11-12">Semana 6: Búsqueda Adversaria: Minimax y Alpha-Beta (Clases 11-12)</a></li>
+<li><a href="#semana-7-aut%C3%B3matas-finitos-y-celulares-clases-13-14">Semana 7: Autómatas Finitos y Celulares (Clases 13-14)</a></li>
+<li><a href="#semana-8-modelado-basado-en-agentes-abm-clases-15-16">Semana 8: Modelado Basado en Agentes (ABM) (Clases 15-16)</a></li>
+<li><a href="#semana-9-algoritmos-gen%C3%A9ticos-fundamentos-clases-17-18">Semana 9: Algoritmos Genéticos: Fundamentos (Clases 17-18)</a></li>
+<li><a href="#semana-10-algoritmos-gen%C3%A9ticos-y-aplicaciones-clases-19-20">Semana 10: Algoritmos Genéticos y Aplicaciones (Clases 19-20)</a></li>
+<li><a href="#semana-11-aprendizaje-por-refuerzo-fundamentos-clases-21-22">Semana 11: Aprendizaje por Refuerzo: Fundamentos (Clases 21-22)</a></li>
+<li><a href="#semana-12-aprendizaje-por-refuerzo-avanzado-clases-23-24">Semana 12: Aprendizaje por Refuerzo Avanzado (Clases 23-24)</a></li>
+<li><a href="#semana-13-integraci%C3%B3n-de-t%C3%A9cnicas-cl%C3%A1sicas-clases-25-26">Semana 13: Integración de Técnicas Clásicas (Clases 25-26)</a></li>
+<li><a href="#semana-14-torneos-de-axelrod-y-co-evoluci%C3%B3n-clases-27-28">Semana 14: Torneos de Axelrod y Co-Evolución (Clases 27-28)</a></li>
+<li><a href="#semana-15-aut%C3%B3matas-celulares-avanzados-y-abm-clases-29-30">Semana 15: Autómatas Celulares Avanzados y ABM (Clases 29-30)</a></li>
+<li><a href="#semana-16-revisi%C3%B3n-y-cierre-clases-31-32">Semana 16: Revisión y Cierre (Clases 31-32)</a></li>
+<li><a href="#entornos-y-mecanismos-clave">Entornos y Mecanismos Clave</a></li>
+<li><a href="#m%C3%A9todo-de-evaluaci%C3%B3n-orientativo">Método de Evaluación (Orientativo)</a></li>
+<li><a href="#conclusi%C3%B3n">Conclusión</a></li>
+</ol>
+<hr>
+<h2 id="objetivos-principales">OBJETIVOS PRINCIPALES</h2>
+<ol>
+<li><strong>Comprender</strong> la evolución histórica de la IA y los fundamentos de la IA clásica (GOFAI).</li>
+<li><strong>Implementar</strong> y comparar algoritmos de búsqueda (BFS, DFS, A*, etc.) en entornos de prueba.</li>
+<li><strong>Diseñar</strong> sistemas de razonamiento simbólico y basados en reglas.</li>
+<li><strong>Dominar</strong> los conceptos centrales de la <strong>Teoría de Juegos</strong>, con énfasis en <strong>mecanismos de diseño</strong>, juegos repetidos y torneos estilo Robert Axelrod.</li>
+<li><strong>Implementar</strong> búsqueda adversaria (Minimax, Alpha-Beta) en juegos de tablero.</li>
+<li><strong>Explorar</strong> autómatas finitos y <strong>autómatas celulares</strong> (ej. Conway’s Game of Life) para entender comportamiento emergente.</li>
+<li><strong>Aplicar</strong> algoritmos evolutivos (genéticos) en problemas de optimización y experimentación.</li>
+<li><strong>Introducir</strong> conceptos de aprendizaje por refuerzo y desarrollar agentes Q-learning.</li>
+<li><strong>Utilizar</strong> entornos compartidos para experimentar, comparar y competir con diferentes estrategias de IA.</li>
+</ol>
+<hr>
+<h2 id="estructura-del-curso">ESTRUCTURA DEL CURSO</h2>
+<ul>
+<li><strong>32 clases</strong> en <strong>16 semanas</strong> (2 clases por semana, 2 horas cada clase).</li>
+<li>Cada semana se enfoca en un <strong>tema</strong> central (teoría + práctica).</li>
+<li>Se crean o utilizan <strong>entornos</strong> para probar y comparar algoritmos.</li>
+<li>Las <strong>presentaciones finales</strong> se realizarán fuera de este calendario.</li>
+</ul>
+<hr>
+<h2 id="semana-1-introducci%C3%B3n-hist%C3%B3rica-y-gofai-clases-1-2">SEMANA 1: INTRODUCCIÓN HISTÓRICA Y GOFAI (CLASES 1-2)</h2>
+<h3 id="clase-1">Clase 1</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Historia de la IA y Fundamentos de GOFAI</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Orígenes de la IA, “inviernos” de la IA, reaparición del aprendizaje automático</li>
+<li>Visión general del curso y sus proyectos</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Debate: “¿Qué es inteligencia en máquinas?”</li>
+<li>Descripción de los principales <strong>entornos</strong> y proyectos</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-2">Clase 2</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Razonamiento Simbólico y Reglas</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>GOFAI: sistemas basados en reglas, representación del conocimiento (nociones básicas)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Demostración de un <strong>chatbot</strong> o <strong>solucionador de acertijos</strong> con reglas if-then</li>
+<li><strong>Proyecto 1</strong>: Iniciar un agente de reglas sencillo (mini-sistema experto o puzzle)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-2-b%C3%BAsqueda-no-informada-e-informada-clases-3-4">SEMANA 2: BÚSQUEDA NO INFORMADA E INFORMADA (CLASES 3-4)</h2>
+<h3 id="clase-3">Clase 3</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Búsqueda No Informada (BFS, DFS, Coste Uniforme)</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Representación de grafos, espacios de estados</li>
+<li>Implementaciones de BFS/DFS en problemas simples</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Entorno Laberinto</strong> o <strong>8-Puzzle</strong>: comparar BFS y DFS</li>
+<li>Iniciar <strong>Proyecto 2</strong> (resolver el problema con búsqueda no informada)</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-4">Clase 4</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Búsqueda Informada (A*, Greedy Best-First)</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Diseño de heurísticas, comparación A* vs BFS/DFS</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Implementar A* y medir rendimiento</li>
+<li>Finalizar <strong>Proyecto 2</strong> con pruebas de heurísticas</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-3-representaci%C3%B3n-del-conocimiento-y-razonamiento-clases-5-6">SEMANA 3: REPRESENTACIÓN DEL CONOCIMIENTO Y RAZONAMIENTO (CLASES 5-6)</h2>
+<h3 id="clase-5">Clase 5</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Redes Semánticas, Ontologías y Sistemas Expertos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Ontologías (RDF, frames) y razonamiento simbólico</li>
+<li>Diferencias entre búsqueda y razonamiento basado en conocimiento</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Demostración de ontologías simples (familia, medicina básica, etc.)</li>
+<li><strong>Proyecto 3</strong>: Iniciar sistema experto (motor de reglas + base de conocimiento)</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-6">Clase 6</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Inferencia y Limitaciones de GOFAI</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Encadenamiento hacia adelante y atrás</li>
+<li>Ventajas y desventajas de la IA simbólica</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Programar reglas de inferencia en Python</li>
+<li>Validar <strong>Proyecto 3</strong> en distintos escenarios</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-4-teor%C3%ADa-de-juegos-i---fundamentos-y-mecanismos-clases-7-8">SEMANA 4: TEORÍA DE JUEGOS I - FUNDAMENTOS Y MECANISMOS (CLASES 7-8)</h2>
+<h3 id="clase-7">Clase 7</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Conceptos Básicos de Teoría de Juegos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Payoff matrices, juegos de suma cero y no cero</li>
+<li>Equilibrio de Nash, ejemplos clásicos (Dilema del Prisionero, etc.)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Simulador básico de un juego (Dilema del Prisionero de 1 ronda)</li>
+<li>Discusión sobre estrategias dominantes y equilibrios</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-8">Clase 8</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Diseño de Mecanismos y Tipos de Juegos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Cómo diseñar payoff matrices o recompensas para influir en la conducta</li>
+<li>Juegos con información completa/incompleta, subastas, negociación</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Análisis de distintos mecanismos (subasta sellada, Vickrey, etc.)</li>
+<li>Preparar el terreno para juegos repetidos y estrategias evolutivas</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-5-teor%C3%ADa-de-juegos-ii---juegos-repetidos-y-torneos-de-axelrod-clases-9-10">SEMANA 5: TEORÍA DE JUEGOS II - JUEGOS REPETIDOS Y TORNEOS DE AXELROD (CLASES 9-10)</h2>
+<h3 id="clase-9">Clase 9</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Juegos Repetidos y Estrategias Clásicas</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Iterated Prisoner’s Dilemma (IPD), tit-for-tat, grim trigger</li>
+<li>Concepto de recíproca, estabilidad y cooperación</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Proyecto 4</strong>: Diseñar estrategias de IPD</li>
+<li>Ajustes de payoff y análisis de convergencia al cooperar o traicionar</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-10">Clase 10</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Torneos de Axelrod y Mecanismos Evolutivos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Robert Axelrod, estudio empírico de estrategias, ruido en iteraciones</li>
+<li>Co-evolución de estrategias en un ambiente repetido</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Torneo de Axelrod</strong> (round-robin) con registro de puntuaciones</li>
+<li>Observación de estrategias ganadoras, “eye for eye” vs. “always defect”, etc.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-6-b%C3%BAsqueda-adversaria-minimax-y-alpha-beta-clases-11-12">SEMANA 6: BÚSQUEDA ADVERSARIA: MINIMAX Y ALPHA-BETA (CLASES 11-12)</h2>
+<h3 id="clase-11">Clase 11</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Minimax en Juegos Adversarios</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Árboles de juego, evaluación de posiciones, podas iniciales</li>
+<li>Aplicación en juegos como Tres en Raya (Tic-Tac-Toe)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Proyecto 5</strong>: Crear agente adversario para un juego de tablero (Tic-Tac-Toe, Conecta 4)</li>
+<li>Programar versión básica de Minimax</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-12">Clase 12</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Alpha-Beta y Heurísticas de Evaluación</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Poda Alpha-Beta para mejorar la eficiencia</li>
+<li>Profundidad limitada y evaluación heurística</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Integrar Alpha-Beta en el mismo juego</li>
+<li>Competir agentes con limitación de tiempo o profundidad</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-7-aut%C3%B3matas-finitos-y-celulares-clases-13-14">SEMANA 7: AUTÓMATAS FINITOS Y CELULARES (CLASES 13-14)</h2>
+<h3 id="clase-13">Clase 13</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Teoría de Autómatas Finitos (AFD/AFN)</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Máquinas de estados y su uso en IA</li>
+<li>Ejemplos: reconocimiento de patrones, máquinas expendedoras</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Proyecto 6</strong>: Implementar un autómata finito y probar entradas/estados</li>
+<li>Visualización de transiciones</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-14">Clase 14</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Autómatas Celulares y Conway’s Game of Life</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Reglas de nacimiento y muerte, comportamiento emergente</li>
+<li>Variantes (Highlife, Seeds) y aplicaciones de AC</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Programar <strong>Game of Life</strong></li>
+<li>Observar ciclos, estabilidad y patrones (planeadores, etc.)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-8-modelado-basado-en-agentes-abm-clases-15-16">SEMANA 8: MODELADO BASADO EN AGENTES (ABM) (CLASES 15-16)</h2>
+<h3 id="clase-15">Clase 15</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Introducción a ABM y Sistemas Complejos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Depredador-presa, Boids (flocking)</li>
+<li>Librerías como Mesa (Python)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Plantear <strong>Proyecto 7</strong>: un ABM sencillo (recursos, interacción entre agentes)</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-16">Clase 16</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Implementación y Análisis de ABM</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Parámetros de comportamiento, reglas locales y efectos globales</li>
+<li>Visualización y medición de resultados (densidad, poblaciones, etc.)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Programar el ABM y experimentar con valores</li>
+<li>Discutir posibles extensiones (cooperación vs. competencia)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-9-algoritmos-gen%C3%A9ticos-fundamentos-clases-17-18">SEMANA 9: ALGORITMOS GENÉTICOS: FUNDAMENTOS (CLASES 17-18)</h2>
+<h3 id="clase-17">Clase 17</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Conceptos Básicos de Algoritmos Genéticos (AG)</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Población, selección, cruce, mutación</li>
+<li>Función de aptitud y codificación</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Ejemplo simple (maximizar f(x))</li>
+<li><strong>Proyecto 8</strong>: GA para TSP, Knapsack u otro problema de optimización</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-18">Clase 18</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Ajuste de Parámetros y Convergencia</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Tasas de mutación, tipos de selección (ruleta, torneo)</li>
+<li>Visualización de convergencia de generaciones</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Competencia: ¿Quién logra la mejor aptitud tras X generaciones?</li>
+<li>Documentar conclusiones de rendimiento</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-10-algoritmos-gen%C3%A9ticos-y-aplicaciones-clases-19-20">SEMANA 10: ALGORITMOS GENÉTICOS Y APLICACIONES (CLASES 19-20)</h2>
+<h3 id="clase-19">Clase 19</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Aplicaciones Avanzadas de AG y Co-Evolución</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Estrategias evolutivas, programación genética (GP)</li>
+<li>Co-evolución en entornos multi-agente</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Refinar la implementación del GA</li>
+<li>Comparar modos de selección y su impacto en la velocidad de convergencia</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-20">Clase 20</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Integración de AG con Otros Métodos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>GA para generar heurísticas en búsqueda adversaria</li>
+<li>Evolución de estrategias en IPD (combinación con teoría de juegos)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Probar variantes de GA en distintos entornos</li>
+<li>Discutir hallazgos y posibilidades futuras</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-11-aprendizaje-por-refuerzo-fundamentos-clases-21-22">SEMANA 11: APRENDIZAJE POR REFUERZO: FUNDAMENTOS (CLASES 21-22)</h2>
+<h3 id="clase-21">Clase 21</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Fundamentos de Aprendizaje por Refuerzo (RL)</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Agente, entorno, recompensas, estados y acciones</li>
+<li>Diferencias con búsqueda clásica y algoritmos evolutivos</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li><strong>Proyecto 9</strong>: Q-Learning en un Gridworld o Maze sencillo</li>
+<li>Configurar funciones de recompensa y castigo</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-22">Clase 22</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Q-Learning, $\epsilon$-Greedy y Parametrización</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Tasa de aprendizaje ($\alpha$), factor de descuento ($\gamma$), exploración ($\epsilon$)</li>
+<li>Visualización de la Q-Table</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Ajustar hiperparámetros y comparar convergencia</li>
+<li>Evaluar desempeño del agente en varios escenarios</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-12-aprendizaje-por-refuerzo-avanzado-clases-23-24">SEMANA 12: APRENDIZAJE POR REFUERZO AVANZADO (CLASES 23-24)</h2>
+<h3 id="clase-23">Clase 23</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Ajustes Avanzados y Shaping de Recompensas</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Decaimiento de $\epsilon$, shaping de recompensas, atascos</li>
+<li>Problemas de convergencia</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Mejorar el agente Q-Learning con técnicas de shaping</li>
+<li>Comparar resultados de velocidad/calidad de la política aprendida</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-24">Clase 24</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Extensión a Entornos Complejos o Multi-Agente</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Visión general de SARSA, DQN (opcional)</li>
+<li>RL en sistemas cambiantes o multi-agente</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Debate: escenarios multi-agente con RL</li>
+<li>Ejercicios de diseño de recompensas en sistemas complejos</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-13-integraci%C3%B3n-de-t%C3%A9cnicas-cl%C3%A1sicas-clases-25-26">SEMANA 13: INTEGRACIÓN DE TÉCNICAS CLÁSICAS (CLASES 25-26)</h2>
+<h3 id="clase-25">Clase 25</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Retrospectiva y Combinación de Métodos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Ejemplos de IA híbrida: reglas + búsqueda + RL + GA</li>
+<li>Casos reales donde conviven enfoques clásicos</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Revisión de proyectos pasados</li>
+<li>Brainstorm de un proyecto integrador con varios métodos</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-26">Clase 26</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Diseño de Mecanismos en Profundidad</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Subastas, negociación, reglas avanzadas de juego</li>
+<li>Énfasis en la ética y la equidad en el diseño</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Taller: crear un mini-entorno de subasta o negociación</li>
+<li>Discusión de cómo afectan las reglas a los agentes</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-14-torneos-de-axelrod-y-co-evoluci%C3%B3n-clases-27-28">SEMANA 14: TORNEOS DE AXELROD Y CO-EVOLUCIÓN (CLASES 27-28)</h2>
+<h3 id="clase-27">Clase 27</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Ampliación de los Torneos de Axelrod</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>IPD con variaciones (ruido, mutaciones de estrategia)</li>
+<li>Observación de cooperación emergente y estabilidad</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Programar un entorno que permita “evolucionar” estrategias a lo largo de rondas</li>
+<li>Medir y graficar evolución de la población</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-28">Clase 28</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Análisis de Resultados y Comparaciones</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Relación con sistemas evolutivos y aprendizaje por refuerzo</li>
+<li>Estrategias estables y dinámicas de traición/cooperación</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Ajustar reglas (payoff, ruido) y observar cambios</li>
+<li>Discusión sobre implicaciones en teoría de juegos e IA</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-15-aut%C3%B3matas-celulares-avanzados-y-abm-clases-29-30">SEMANA 15: AUTÓMATAS CELULARES AVANZADOS Y ABM (CLASES 29-30)</h2>
+<h3 id="clase-29">Clase 29</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Variantes del Game of Life y Sistemas Complejos</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Alteraciones de reglas (nacimiento/muerte), bordes toroidales, etc.</li>
+<li>Aplicaciones en biología, sociología, urbanismo</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Probar cambios de reglas en Game of Life</li>
+<li>Analizar patrones y comportamiento emergente</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-30">Clase 30</h3>
+<ul>
+<li><strong>Tema Principal:</strong> ABM + RL o ABM + AG</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Hibridar ABM con aprendizaje o evolución</li>
+<li>Retos en simulaciones de muchos agentes</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Experimentar con un ABM donde los agentes aprendan o muten</li>
+<li>Discusión sobre complejidad y escalabilidad</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="semana-16-revisi%C3%B3n-y-cierre-clases-31-32">SEMANA 16: REVISIÓN Y CIERRE (CLASES 31-32)</h2>
+<h3 id="clase-31">Clase 31</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Exploración de Temas Opcionales y Ajustes Finales</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Discusión de subtemas (subastas multi-agente, teoría de contratos, etc.)</li>
+<li>No hay presentaciones formales (se programan aparte)</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Demostraciones informales o pruebas extremas en entornos</li>
+<li>Debate: IA clásica vs. IA moderna</li>
+</ul>
+</li>
+</ul>
+<h3 id="clase-32">Clase 32</h3>
+<ul>
+<li><strong>Tema Principal:</strong> Reflexiones Finales y Perspectivas Futuras</li>
+<li><strong>Contenido:</strong>
+<ul>
+<li>Resumen de aprendizajes clave y conexiones con Deep Learning o Robótica</li>
+<li>Conclusiones sobre Teoría de Juegos, Búsqueda, RL, etc.</li>
+</ul>
+</li>
+<li><strong>Actividades:</strong>
+<ul>
+<li>Retroalimentación entre estudiantes e instructor</li>
+<li><strong>Cierre del curso</strong> (sin presentaciones formales; examen/proyecto final en otra fecha)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="entornos-y-mecanismos-clave">ENTORNOS Y MECANISMOS CLAVE</h2>
+<ol>
+<li><strong>Proyecto 1 (Reglas/GOFAI)</strong>: Agente simbólico (chatbot/puzzle).</li>
+<li><strong>Proyecto 2 (Búsqueda)</strong>: Laberinto o 8-puzzle con BFS/DFS/A*.</li>
+<li><strong>Proyecto 3 (Sist. Experto)</strong>: Base de conocimiento + motor de inferencia.</li>
+<li><strong>Proyecto 4 (Teoría de Juegos / IPD)</strong>: Torneos repetidos al estilo Axelrod, analizando payoff y cooperación.</li>
+<li><strong>Proyecto 5 (Búsqueda Adversaria)</strong>: Juegos de tablero (Tic-Tac-Toe, Conecta 4) con Minimax/Alpha-Beta.</li>
+<li><strong>Proyecto 6 (Autómatas)</strong>: FSM simple + Conway’s Game of Life.</li>
+<li><strong>Proyecto 7 (ABM)</strong>: Depredador-presa, boids u otro modelo de agentes.</li>
+<li><strong>Proyecto 8 (AG)</strong>: TSP, Knapsack o problemas de optimización; co-evolución de estrategias.</li>
+<li><strong>Proyecto 9 (RL)</strong>: Gridworld/Maze con Q-Learning (y variantes).</li>
+</ol>
+<p>El <strong>diseño de mecanismos</strong> aparece en teoría de juegos (estructurar payoff matrices, subastas), en RL (recompensas) y en GA (función de aptitud). Así, se investiga cómo los cambios en las reglas impactan la conducta emergente de los agentes.</p>
+<hr>
+<h2 id="m%C3%A9todo-de-evaluaci%C3%B3n-orientativo">MÉTODO DE EVALUACIÓN (ORIENTATIVO)</h2>
+<ul>
+<li><strong>Proyectos y Tareas Prácticas</strong> (implementación y documentación).</li>
+<li><strong>Exámenes Teóricos Parciles</strong> . (Por definir de 3 a 5)</li>
+<li><strong>Proyecto Final / Presentaciones</strong> (fuera de las 32 clases, de carácter integrador o de investigación adicional).</li>
+</ul>
+<hr>
+<h2 id="conclusi%C3%B3n">CONCLUSIÓN</h2>
+<p>Este programa abarca <strong>IA Clásica</strong> con un enfoque especial en la <strong>Teoría de Juegos</strong>, expandiendo los conceptos de <strong>juegos repetidos</strong>, <strong>mecanismos de diseño</strong> y <strong>torneos de Axelrod</strong>, además de cubrir la búsqueda, los sistemas expertos, la búsqueda adversaria, autómatas, algoritmos genéticos y aprendizaje por refuerzo. A lo largo de 32 clases, los estudiantes tienen oportunidades de:</p>
+<ul>
+<li><strong>Experimentar</strong> con distintos métodos en <strong>entornos específicos</strong>.</li>
+<li><strong>Comparar</strong> resultados y reflexionar sobre la influencia de la estructura de recompensas y la dinámica de interacción.</li>
+<li><strong>Obtener</strong> una base sólida de IA Clásica para luego profundizar en técnicas más modernas de Machine Learning o Deep Learning.</li>
+</ul>
+<p>Las <strong>presentaciones finales</strong> y el <strong>examen</strong> se llevarán a cabo fuera de este cronograma, permitiendo que cada participante muestre su proyecto integrador o realice investigaciones complementarias.</p>
+
+</body>
+
+</html>
