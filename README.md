@@ -5,3 +5,5 @@
 
 ## Discord de la Clase
 https://discord.gg/fEB8rSUdur 
+
+Simulador Zombie: https://github.com/sonder-art/graph_zombie_repo 
