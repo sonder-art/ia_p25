@@ -7,6 +7,9 @@ La exposición se asume para lectores con base en teoría de la probabilidad y t
 ---
 
 ## 1. Fundamentos de los problemas de decisión bajo incertidumbre
+![alt text](imagenes/abstraccion_problemas.png)
+
+![alt text](imagenes/proceso_mental.png)
 
 ### 1.1 Definición básica
 
@@ -71,6 +74,8 @@ $
 
 En muchos problemas prácticos, **no** se dispone de $p(z \mid \omega)$ exacta, sino que se recurre a **estimaciones**, **modelos simplificados** o **correlaciones empíricas**.
 
+
+ ![alt text](imagenes/actualizacion_bayesiana.png)
 ### 2.2 Formulación de un problema con información parcial
 
 El decisor recibe $Z = z$ y luego **selecciona** $d$. En la versión **estática** pura, puede ocurrir que:
@@ -93,12 +98,12 @@ Para "ver" un problema real como un **problema de decisión estática** bajo inc
    - ¿Qué información parcial/proxy existe (variables $Z$)?
    - ¿Cómo se relaciona $Z$ con $\omega$? (p.ej. $p(z \mid \omega)$ estimado o supuesto).
 5. **Evaluar** las posibles decisiones con la esperanza de la utilidad o un criterio multicriterio.
-
 ---
 
 ## 4. Heurísticas y enfoques aproximados
 
-En muchas situaciones reales, la complejidad hace que sea **impracticable** obtener la solución óptima bajo el criterio de valor esperado de utilidad. Además, los datos disponibles para estimar $p(\omega)$ o $p(z \mid \omega)$ pueden ser **muy limitados** o ruidosos. En estos casos, se utilizan **heurísticas** o **reglas de dedo** que aproximan el proceso de decisión.
+En muchas situaciones reales, la complejidad hace que sea **impracticable** obtener la solución óptima bajo el criterio de valor esperado de utilidad. Además, los datos disponibles para estimar $p(\omega)$ o $p(z \mid \omega)$ pueden ser **muy limitados** o ruidosos![alt text](imagenes/proceso_mental.png)
+. En estos casos, se utilizan **heurísticas** o **reglas de dedo** que aproximan el proceso de decisión.
 
 ### 4.1 Heurísticas de elección de decisión
 
@@ -126,7 +131,7 @@ En muchas situaciones reales, la complejidad hace que sea **impracticable** obte
   $
 - **Suavizado (smoothing)**: Añadir pseudo-cuentas (Dirichlet, Laplace) para evitar probabilidades nulas en muestras pequeñas.  
 - **Expert-based**: Incorporar conocimiento experto o "best guesses" cuando los datos son insuficientes.
-
+![alt text](imagenes/comparacion_heuristicas.png)
 ---
 
 ## 5. Proceso sistemático de diseño de un problema de decisión estática
@@ -154,6 +159,7 @@ Cuando enfrentamos un **problema real** y queremos **diseñar** (o "mapear") un 
 5. **Validación y ajuste**:  
    - Verificar si el modelo se ajusta a la realidad o si las simplificaciones resultan en decisiones poco robustas.  
    - Iterar si es posible.
+
 
 ---
 

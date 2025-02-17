@@ -18,6 +18,8 @@ Supongamos que el **decisor** (el dueño de la panadería) no dispone de un gran
 
 Con este panorama, el dueño quiere tomar la **decisión estática** de cuántos croissants hornear cada día **antes** de que ocurra la venta real, basándose en la información disponible (pronóstico del día, si es fin de semana, etc.) y en su **pequeña base de datos** del pasado.
 
+
+![alt text](imagenes/ejemplo_panaderia-2025-02-17-232945.png)
 ---
 
 ## 2. Formulación inicial
@@ -96,6 +98,8 @@ De manera muy **rudimentaria** (regla de dedo), podríamos inferir:
 - **Lluvioso, entre semana** → demanda esperada ≈ 11
 - **Lluvioso, fin de semana** → demanda esperada ≈ 16
 
+
+![alt text](imagenes/demanda_panes.png)
 ---
 
 ## 4. Decisión diaria y criterio de valor esperado
@@ -126,7 +130,7 @@ Ejemplo simplificado:
   ```
   c/p = 1/3 ≈ 0.33
   ```
-
+![alt text](imagenes/optimo.png)
 ---
 
 ## 5. Ejecución diaria

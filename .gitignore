@@ -170,3 +170,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 hidden*
+gpu.md
+gpu.pdf
+placeholder.txt
