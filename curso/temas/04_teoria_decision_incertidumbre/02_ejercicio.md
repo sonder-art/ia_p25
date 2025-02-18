@@ -46,11 +46,11 @@ Antes de plantear un problema de decisión bajo incertidumbre, conviene hacerse 
 
 Siguiendo el documento teórico previo, un **problema de decisión estática bajo incertidumbre** incluye:
 
-1. **Decisión**: Conjunto de acciones \(D\)
-2. **Estados de la naturaleza** \(\Omega\): Configuraciones posibles del mundo
-3. **Información proxy** \(Z\): Observaciones ruidosas correlacionadas con \(\Omega\)
-4. **Función de utilidad** \(U(\omega, d)\) o costo
-5. **Modelo probabilístico**: \(p(\omega)\) o \(p(\omega \mid Z)\)
+1. **Decisión**: Conjunto de acciones $D$
+2. **Estados de la naturaleza** $\Omega$: Configuraciones posibles del mundo
+3. **Información proxy** $Z$: Observaciones ruidosas correlacionadas con $\Omega$
+4. **Función de utilidad** $U(\omega, d)$ o costo
+5. **Modelo probabilístico**: $p(\omega)$ o $p(\omega \mid Z)$
 
 Tu objetivo:
 \[
@@ -66,20 +66,20 @@ Para mostrar cómo se aplica el proceso, usaremos un **escenario** hipotético: 
 
 ### 2.1 Elementos del ejemplo
 
-1. **Decisiones** (\(D\)):
-   - \(d_0\): No enviar mensaje
-   - \(d_1\): Enviar mensaje de texto (WhatsApp)
+1. **Decisiones** $(D)$:
+   - $d_0$: No enviar mensaje
+   - $d_1$: Enviar mensaje de texto (WhatsApp)
    - (Podrías agregar más decisiones: mandar meme, story reply, pedir cita directa, etc.)
 
-2. **Estados de la naturaleza** (\(\Omega\)):
-   - \(\omega_0\): La persona no está interesada en ti en absoluto
-   - \(\omega_1\): La persona está "indiferente/ambigua"
-   - \(\omega_2\): La persona siente cierto interés
-   - \(\omega_3\): La persona es "malevolente/gaslighter" (enredará la situación)
+2. **Estados de la naturaleza** ($\Omega$):
+   - $\omega_0$: La persona no está interesada en ti en absoluto
+   - $\omega_1$: La persona está "indiferente/ambigua"
+   - $\omega_2$: La persona siente cierto interés
+   - $\omega_3$: La persona es "malevolente/gaslighter" (enredará la situación)
 
-   (Aquí, \(\omega_3\) es un estado peculiar: si la persona actúa con manipulación, tal vez tu iniciativa lleve a un outcome negativo.)
+   (Aquí, $\omega_3$ es un estado peculiar: si la persona actúa con manipulación, tal vez tu iniciativa lleve a un outcome negativo.)
 
-3. **Información proxy** (\(Z\)):
+3. **Información proxy** ($Z$):
    Observaciones (señales en redes) antes de tomar la decisión:
    - Si ve tus estados de Instagram de inmediato
    - Si da like/comparte tus publicaciones de TikTok
@@ -87,32 +87,32 @@ Para mostrar cómo se aplica el proceso, usaremos un **escenario** hipotético: 
    - Si te envía indirectas o reacciona a tu contenido
    - Si (al contrario) hace ghosting o reacciona de forma extraña
 
-   Podríamos codificar estas señales en un vector (por ejemplo, \(\text{Proxy} = [1,1,0,1]\) = "te ve, te likea, no te comparte, te comenta un emoji").
+   Podríamos codificar estas señales en un vector (por ejemplo, $\text{Proxy} = [1,1,0,1]$ = "te ve, te likea, no te comparte, te comenta un emoji").
 
-4. **Función de utilidad** \(U(\omega, d)\):
-   - Si **no envías** el mensaje (\(d_0\)), tu utilidad es pequeña pero estable (evitas rechazo, pero no avanzas)
-   - Si **envías** (\(d_1\)) y la persona está interesada (\(\omega_2\)), tu utilidad es alta (mayor "felicidad")
-   - Si la persona te ignora o te hace "ghosting" (\(\omega_0\)), tu utilidad puede ser negativa (sientes rechazo)
-   - Si la persona es **gaslighter** (\(\omega_3\)), el desenlace puede conllevar estrés, manipulación, etc. (peor que el simple rechazo)
+4. **Función de utilidad** $U(\omega, d)$:
+   - Si **no envías** el mensaje ($d_0$), tu utilidad es pequeña pero estable (evitas rechazo, pero no avanzas)
+   - Si **envías** ($d_1$) y la persona está interesada ($\omega_2$), tu utilidad es alta (mayor "felicidad")
+   - Si la persona te ignora o te hace "ghosting" ($\omega_0$), tu utilidad puede ser negativa (sientes rechazo)
+   - Si la persona es **gaslighter** ($\omega_3$), el desenlace puede conllevar estrés, manipulación, etc. (peor que el simple rechazo)
 
    Ejemplo sencillo de tabla:
 
-   | Estado (\(\omega\)) | Decisión \(d_0\) (No envío) | Decisión \(d_1\) (Envío) |
+   | Estado ($\omega$) | Decisión $d_0$ (No envío) | Decisión $d_1$ (Envío) |
    |----------------------|-----------------------------|--------------------------|
-   | \(\omega_0\) (0% int)    | \(U=0\)                      | \(U=-5\) (rechazo/ghost)  |
-   | \(\omega_1\) (ambig)     | \(U=0\)                      | \(U=1\) (respuesta tibia) |
-   | \(\omega_2\) (int)       | \(U=0\)                      | \(U=+10\) (gran acercam.) |
-   | \(\omega_3\) (gaslighter)| \(U=0\)                      | \(U=-8\) (manipulación)   |
+   | $\omega_0$ (0% int)    | $U=0$                      | $U=-5$ (rechazo/ghost)  |
+   | $\omega_1$ (ambig)     | $U=0$                      | $U=1$ (respuesta tibia) |
+   | $\omega_2$ (int)       | $U=0$                      | $U=+10$ (gran acercam.) |
+   | $\omega_3$ (gaslighter)| $U=0$                      | $U=-8$ (manipulación)   |
 
 5. **Modelo probabilístico**:
-   - A priori, \(\omega\) tiene ciertas probabilidades (p. ej., la persona con un 25% de estar interesada, 25% ambig, 45% sin interés, 5% gaslighter)
-   - Con la **información proxy** \(\{Z=z\}\), ajustamos la distribución. Por ejemplo, si "te reacciona a historias + likes + te invita a un plan", podría aumentar la probabilidad de \(\omega_2\); si "no contesta nada" pero te da un like "extraño", quizá \(\omega_1\) o \(\omega_3\) crezcan.
+   - A priori, $\omega$ tiene ciertas probabilidades (p. ej., la persona con un 25% de estar interesada, 25% ambig, 45% sin interés, 5% gaslighter)
+   - Con la **información proxy** $\{Z=z\}$, ajustamos la distribución. Por ejemplo, si "te reacciona a historias + likes + te invita a un plan", podría aumentar la probabilidad de $\omega_2$; si "no contesta nada" pero te da un like "extraño", quizá $\omega_1$ o $\omega_3$ crezcan.
 
 #### 2.2 Heurísticas con pocos datos
 
 Si solamente tienes "2-3 interacciones" en tu historial y poca claridad, podrías:
 
-- **Regla de dedo**: "Si la persona ve mis historias y me escribe, asumo un 70% de probabilidad de interés (\(\omega_2\)) y decido enviar mensaje. Caso contrario, no lo envío."
+- **Regla de dedo**: "Si la persona ve mis historias y me escribe, asumo un 70% de probabilidad de interés ($\omega_2$) y decido enviar mensaje. Caso contrario, no lo envío."
 - **Maximin**: Evito la decisión que podría resultar en el peor outcome (gaslighting = -8). Así no envío nunca (d_0)
 - **Most likely state**: Observa la señal e infiere el estado más probable. Toma la decisión que maximice la utilidad para ese estado "ganador"
 
@@ -125,10 +125,10 @@ Conforme reúnas más evidencias (más casos de "a cuántas personas les fue bie
 A continuación, una lista detallada de pasos para que diseñes **tu** problema de decisión estática:
 
 1. **Elige un dominio** que te interese (ej.: producción, marketing, relaciones personales, logística, etc.)
-2. **Identifica las decisiones principales** (\(D\)) (p. ej., fabricar 10 o 20 unidades, enviar o no un mensaje, invertir en x o y...)
-3. **Enumera los estados de la naturaleza** (\(\Omega\)) (p. ej., alta demanda, baja demanda, la persona interesada o no, etc.)
+2. **Identifica las decisiones principales** ($D$) (p. ej., fabricar 10 o 20 unidades, enviar o no un mensaje, invertir en x o y...)
+3. **Enumera los estados de la naturaleza** ($\Omega$) (p. ej., alta demanda, baja demanda, la persona interesada o no, etc.)
 4. **Especifica la utilidad**: ¿Cómo es el resultado si tomas cada decisión en cada estado? (puede ser monetario o subjetivo)
-5. **Describe la incertidumbre**: ¿Por qué no conoces \(\omega\)? ¿Cómo la modelas (distribución)?
+5. **Describe la incertidumbre**: ¿Por qué no conoces $\omega$? ¿Cómo la modelas (distribución)?
 6. **Establece la información parcial** (proxy) que **observas** antes de decidir: ¿datos de clima, redes, mercado, etc.?
 7. **Proponte** un criterio de decisión: ¿maximizar valor esperado? ¿maximin? ¿regla de umbral?
 8. **Considera heurísticas** si no puedes estimar todo con precisión
@@ -175,7 +175,7 @@ print(f"Mejor decision si te da like = {best_dec_z1}")
 #### Explicación
 
 1. Calculamos la **probabilidad** de que el "like" ocurra
-2. Con la **regla de Bayes**, actualizamos la probabilidad de cada estado al ver \(z=1\)
+2. Con la **regla de Bayes**, actualizamos la probabilidad de cada estado al ver $z=1$
 3. Recalculamos el **valor esperado** de cada decisión bajo esa distribución posterior
 4. Comparamos y tomamos la mejor decisión si "sí hay like"
 
@@ -279,7 +279,7 @@ Este tipo de gráfico te permite ver en qué rango de probabilidad de interés c
 
 ### 5.2 Ideas para extender tu ejercicio
 
-- **Múltiples proxys**: Incluir más señales y estimar \(p(z_1, z_2 \mid \omega)\)
+- **Múltiples proxys**: Incluir más señales y estimar $p(z_1, z_2 \mid \omega)$
 - **Costos extras**: Ej. costo emocional de insistir, costo de inventario en el caso de un problema de stock, etc.
 - **Simulaciones**: Generar escenarios aleatorios y ver cuántas veces tu decisión heurística da buen resultado
 - **Añadir comportamientos**: por ejemplo, si la otra persona es gaslighter, tu utilidad puede variar con más matices
