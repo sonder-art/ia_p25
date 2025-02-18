@@ -439,3 +439,5 @@ Este programa abarca **IA Clásica** con un enfoque especial en la **Teoría de 
 - **Obtener** una base sólida de IA Clásica para luego profundizar en técnicas más modernas de Machine Learning o Deep Learning.
 
 Las **presentaciones finales** y el **examen** se llevarán a cabo fuera de este cronograma, permitiendo que cada participante muestre su proyecto integrador o realice investigaciones complementarias. 
+
+
