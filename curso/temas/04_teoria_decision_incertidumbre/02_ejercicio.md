@@ -53,9 +53,7 @@ Siguiendo el documento teórico previo, un **problema de decisión estática baj
 5. **Modelo probabilístico**: $p(\omega)$ o $p(\omega \mid Z)$
 
 Tu objetivo:
-$
-d^* = \arg\max_{d \in D}\; \mathbb{E}[U(\omega, d)].
-$
+$d^* = \arg\max_{d \in D}\; \mathbb{E}[U(\omega, d)]$
 (O el criterio que definas, p. ej. maximin, etc.)
 
 ---
