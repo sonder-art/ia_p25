@@ -173,3 +173,5 @@ hidden*
 gpu.md
 gpu.pdf
 placeholder.txt
+/.quarto/
+/_site/
