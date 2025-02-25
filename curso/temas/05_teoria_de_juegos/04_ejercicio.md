@@ -6,7 +6,7 @@ En un jupyter notebook (puede ser colab) crea codigo para lo siguiente (ayudate 
 1. Una estructura de datos en pydantic flexible que les permita definir de manera formal un juego (jugadores, matrices de pago, politicas, etc). La estructura de datos debe llamarse `EstructuraDeJuego`. Debe ser capaz de aceptar un numero arbitrario de estrategias por jugador y de pagos, ademas debe de validar que tu definicion de juego sea valido (osea no hay errores al instanciar un objeto que usa esa clase)
 1.1 Incluye una estructura, campo o sub estructura de Pydantic para los `Pagos` y las `Estrategias`
 2. Una funcion que dada la `EstructuraDeJuego` y las estrategias elegidas para cada jugador regrese el pago/utilidad. Se llama `def pagos_estrategia(juego:EstructuraDeJuego, estrategia) -> Pagos`
-3. Un algoritmo que dado la `EstructuraDeJuego` encuentre todos los equilibros de nash (si existen), incluye pagos y estrategias como output. `def pagos_estrategia(juego:EstructuraDeJuego) -> (Estrategias,Pagos)`
+3. Un algoritmo que dado la `EstructuraDeJuego` encuentre todos los equilibros de nash (si existen), incluye pagos y estrategias como output. `def equilibrio_nash(juego:EstructuraDeJuego) -> (Estrategias,Pagos)`
 ## Juegos
 Usando los juegos de `curso/temas/05_teoria_de_juegos/02_ejemplos_de_juegos.md` como inspiracion crea 3 juegos y analizalos. Cada juego puede ser completamente diferente, o puede ser re-interpretaciones del mismo con variaciones.
 0. Piensa y disenna en papel los escenarios que quieres modelar
