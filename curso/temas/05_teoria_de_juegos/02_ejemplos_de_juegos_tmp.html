@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>02_ejemplos_de_juegos.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <h1 id="ejemplos-famosos-de-juegos-en-teor%C3%ADa-de-juegos"><strong>Ejemplos Famosos de Juegos en Teoría de Juegos</strong></h1>
+<p>Exploraremos <strong>varios ejemplos de juegos</strong> (más allá del Dilema del Prisionero) que son <strong>famosos</strong> o ilustran situaciones habituales en la vida cotidiana. A cada uno le daremos alguna interpretación sencilla y <strong>analizaremos</strong> sus equilibrios de Nash (si los tienen) o remarcaremos la <strong>ausencia</strong> de los mismos en estrategia pura, cuando sea el caso.</p>
+<p>Los ejemplos aquí presentados son <strong>juegos estáticos</strong> y de <strong>información completa</strong>, con un <strong>número reducido de estrategias</strong> para cada jugador (generalmente 2 o 3). Veremos cómo cada uno <strong>puede interpretarse</strong> de maneras variadas que conectan con la vida diaria.</p>
+<hr>
+<h1 id="1-el-juego-de-la-gallina-chicken"><strong>1. El Juego de la Gallina (Chicken)</strong></h1>
+<h2 id="matriz-de-pagos-versi%C3%B3n-cl%C3%A1sica"><strong>Matriz de Pagos (Versión Clásica)</strong></h2>
+<p>Dos conductores se dirigen de frente, cada uno en su carril, y <strong>ninguno</strong> quiere ser el que &quot;se aparte&quot; (por orgullo). Cada uno elige entre:</p>
+<ul>
+<li><strong>Desviarse</strong> (D): girar el volante y ceder.</li>
+<li><strong>Mantenerse</strong> (M): continuar su trayecto sin desviarse.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Conductor B: D</strong></th>
+<th><strong>Conductor B: M</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Conductor A: D</strong></td>
+<td>$(0, 0)$</td>
+<td>$(-1, +1)$</td>
+</tr>
+<tr>
+<td><strong>Conductor A: M</strong></td>
+<td>$(+1, -1)$</td>
+<td>$(-10, -10)$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretación de pagos</strong>:</p>
+<ul>
+<li>Si ambos se desvían (D, D), nadie &quot;gana orgullo&quot;, pero ninguno sufre el choque, por lo que el pago es intermedio $(0,0)$.</li>
+<li>Si A se desvía y B no, B &quot;gana&quot; (1) su orgullo, A &quot;pierde&quot; (–1) algo de orgullo. Viceversa si A no se desvía y B sí.</li>
+<li>Si ambos se mantienen (M, M), ocurre un <strong>choque</strong> catastrófico $(-10, -10)$.</li>
+</ul>
+<h2 id="an%C3%A1lisis-y-equilibrios"><strong>Análisis y Equilibrios</strong></h2>
+<ul>
+<li><strong>Estrategias dominantes</strong>: No hay.</li>
+<li><strong>Equilibrios de Nash en estrategias puras</strong>:
+<ul>
+<li>(M, D) → A no se desvía, B se desvía.</li>
+<li>(D, M) → A se desvía, B no se desvía.<br>
+Ambos son equilibrios porque ningún jugador querría cambiar su estrategia unilateralmente dadas las acciones del otro.</li>
+</ul>
+</li>
+<li><strong>Interpretación cotidiana</strong>:
+<ul>
+<li><strong>Invitar a salir</strong> vs. <strong>esperar a que te inviten</strong>. Si ambos esperan, nadie se mueve $(-10, -10)$, &quot;fracaso total&quot;. Si uno toma la iniciativa y el otro no, el que &quot;empuja&quot; la situación se arriesga un poco (pago -1), el otro se beneficia de la invitación (+1), pero es mejor que nadie haga nada.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-matching-pennies-sin-equilibrio-puro"><strong>2. Matching Pennies (Sin Equilibrio Puro)</strong></h1>
+<h2 id="matriz-de-pagos"><strong>Matriz de Pagos</strong></h2>
+<p>Dos jugadores (A y B) eligen simultáneamente si mostrar &quot;cara&quot; (C) o &quot;cruz&quot; (X). Si coinciden (ambos muestran C o ambos X), A gana 1 y B pierde 1 (o viceversa, según la convención). Si difieren (uno C, otro X), gana B y pierde A.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>B elige C</strong></th>
+<th><strong>B elige X</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A elige C</strong></td>
+<td>$(+1, -1)$</td>
+<td>$(-1, +1)$</td>
+</tr>
+<tr>
+<td><strong>A elige X</strong></td>
+<td>$(-1, +1)$</td>
+<td>$(+1, -1)$</td>
+</tr>
+</tbody>
+</table>
+<h2 id="an%C3%A1lisis-y-equilibrios"><strong>Análisis y Equilibrios</strong></h2>
+<ul>
+<li><strong>Estrategias dominantes</strong>: No hay.</li>
+<li><strong>Equilibrio de Nash en estrategias puras</strong>: <strong>No existe</strong>. Cualquier celda que elijas, el otro jugador puede cambiar su estrategia y obtener un mejor pago.</li>
+<li><strong>Equilibrio de Nash en estrategias mixtas</strong>: Cada uno elige C o X con <strong>probabilidad 1/2</strong>. Ese es el único equilibrio, pero no está en estrategias puras.</li>
+<li><strong>Interpretación cotidiana</strong>:
+<ul>
+<li><strong>Juego de adivinar</strong> el &quot;verdadero interés&quot; del otro: si la otra persona cree que vas a &quot;cooperar&quot;, ella puede cambiar su jugada para aprovecharse, etc.</li>
+<li><strong>Salir a beber vs. quedarse en casa</strong>: si uno cree que su compañero se queda en casa, tal vez prefiera salir y viceversa, lo que genera un vaivén de decisiones.</li>
+<li>Este juego suele modelar la idea de &quot;ocultar o descubrir&quot;, donde cada jugador trata de anticipar la acción del otro.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="3-stag-hunt-caza-del-ciervo"><strong>3. Stag Hunt (Caza del Ciervo)</strong></h1>
+<h2 id="matriz-de-pagos-versi%C3%B3n-2x2"><strong>Matriz de Pagos (Versión 2x2)</strong></h2>
+<p>Dos cazadores salen a cazar. Pueden <strong>colaborar</strong> (C) para cazar un ciervo grande (requiere ambos) o <strong>ir solos</strong> (S) y cazar un conejo (menos valioso, pero seguro).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>B elige C (colaborar)</strong></th>
+<th><strong>B elige S (solo)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A elige C (colaborar)</strong></td>
+<td>$(3, 3)$</td>
+<td>$(0, 2)$</td>
+</tr>
+<tr>
+<td><strong>A elige S (solo)</strong></td>
+<td>$(2, 0)$</td>
+<td>$(2, 2)$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretación de pagos</strong> (ejemplo numérico):</p>
+<ul>
+<li>Si ambos colaboran (C, C): cada uno obtiene 3 (ciervo grande compartido).</li>
+<li>Si uno colabora y el otro no, el que va solo atrapa un conejo (2), y el que colaboró no consigue nada (0).</li>
+<li>Si ambos van solos (S, S), cada uno se lleva un conejo (2).</li>
+</ul>
+<h2 id="an%C3%A1lisis-y-equilibrios"><strong>Análisis y Equilibrios</strong></h2>
+<ul>
+<li><strong>Equilibrios de Nash en puras</strong>:
+<ol>
+<li>(C, C) → ambos colaboran y nadie gana desviándose (desviarte te da 2, que es menos que 3).</li>
+<li>(S, S) → ambos van solos, y si uno se desvía a colaborar mientras el otro sigue solo, sale perdiendo (pasa de 2 a 0).</li>
+</ol>
+</li>
+<li><strong>Interpretación cotidiana</strong>:
+<ul>
+<li><strong>Hacer tareas en equipo</strong> vs. <strong>hacerlas solo</strong>. Colaborar puede dar mayor beneficio, pero solo funciona si los demás también colaboran.</li>
+<li><strong>Estudiar juntos</strong> vs. <strong>independiente</strong>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="4-el-juego-de-la-coordinaci%C3%B3n-con-conflicto"><strong>4. El juego de la coordinación con conflicto</strong></h1>
+<h2 id="matriz-de-pagos"><strong>Matriz de Pagos</strong></h2>
+<p>Imaginemos que amigues  quiere decidir si el plan de la tarde es <strong>ir a ver una película</strong> (P) o <strong>ir a un concierto</strong> (C). A prefiere la película ligeramente más, B prefiere el concierto. Pero ambos valoran más <strong>estar juntos</strong> que ir separados.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>B elige P</strong></th>
+<th><strong>B elige C</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A elige P</strong></td>
+<td>$(2,1)$</td>
+<td>$(0,0)$</td>
+</tr>
+<tr>
+<td><strong>A elige C</strong></td>
+<td>$(0,0)$</td>
+<td>$(1,2)$</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Si A elige P y B elige P, A gana 2, B gana 1.</li>
+<li>Si A elige C y B elige C, A gana 1, B gana 2.</li>
+<li>Si eligen <strong>opciones distintas</strong> (P vs. C), ambos obtienen 0 (separados).</li>
+</ul>
+<h2 id="an%C3%A1lisis-y-equilibrios"><strong>Análisis y Equilibrios</strong></h2>
+<ul>
+<li><strong>Equilibrios de Nash en puras</strong>:
+<ul>
+<li>(P, P) y (C, C).</li>
+</ul>
+</li>
+<li><strong>Interpretaciones</strong>:
+<ul>
+<li>El <strong>conflicto</strong> radica en <strong>quién</strong> logra su plan preferido, pero <strong>la coordinación</strong> es clave.</li>
+<li>&quot;¿Salimos a comer pizza o sushi?&quot; Uno prefiere pizza, el otro sushi, pero peor es no salir juntos.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="5-%22enviar-mensaje-a-la-persona-que-te-gusta%22"><strong>5. &quot;Enviar Mensaje a la Persona que te Gusta&quot;</strong></h1>
+<ul>
+<li><strong>Jugador A</strong>: Tú, que decides si enviar un mensaje (M) o quedarte callado (N).</li>
+<li><strong>Jugador B</strong>: La persona que te interesa. Puede &quot;responder con interés real&quot; (I) o &quot;responder de forma manipuladora&quot; (sea love bombing o gaslighting) (G).</li>
+</ul>
+<h2 id="posible-matriz-de-pagos-2x2"><strong>Posible Matriz de Pagos (2x2)</strong></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>B: Interés (I)</strong></th>
+<th><strong>B: Manipulación (G)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A: Mensaje (M)</strong></td>
+<td>$(+2, +2)$</td>
+<td>$(-2, +1)$</td>
+</tr>
+<tr>
+<td><strong>A: No Mensaje (N)</strong></td>
+<td>$(0, 0)$</td>
+<td>$(0, -1)$</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretación de pagos</strong>:</p>
+<ul>
+<li>(M, I): Tú envías mensaje, la otra persona responde con interés genuino:
+<ul>
+<li>A se siente contento (+2). B también &quot;gana&quot; (+2) por una interacción honesta y satisfactoria.</li>
+</ul>
+</li>
+<li>(M, G): Envío de mensaje y el otro responde manipulando (love bombing: halagos exagerados sin compromiso real, o gaslighting: confundiendo intencionalmente):
+<ul>
+<li>A sufre emocionalmente (-2). B obtiene una &quot;ganancia&quot; temporal (+1) sintiéndose con poder.</li>
+</ul>
+</li>
+<li>(N, I): Si A no manda mensaje y la otra persona habría respondido con interés, realmente <strong>no ocurre interacción</strong> → $(0, 0)$.</li>
+<li>(N, G): Tampoco hay interacción, pero B &quot;pierde un poco&quot; (-1) por no poder manipular. A se queda neutral (0).</li>
+</ul>
+<h2 id="an%C3%A1lisis-y-equilibrios"><strong>Análisis y Equilibrios</strong></h2>
+<ol>
+<li>Revisa si hay <strong>estrategias dominantes</strong>:
+<ul>
+<li>Para A: &quot;Mensaje (M)&quot; no siempre es mejor (con G, sale -2). &quot;No Mensaje (N)&quot; evita la pérdida, pero con I se pierde la oportunidad de +2. No hay dominancia.</li>
+<li>Para B: Depende de la acción de A. Si A no envía mensaje, B obtiene 0 o -1, así que prefiere I para obtener 0 (mejor que -1). Si A envía mensaje, B puede elegir +2 (I) o +1 (G). Prefiere +2 &gt; +1, así que I domina en caso de mensaje.</li>
+</ul>
+</li>
+<li><strong>Posible Equilibrio de Nash</strong>:
+<ul>
+<li>Al observar la matriz, la mejor respuesta de B cuando A envía mensaje (M) es I (+2 en lugar de +1). La mejor respuesta de B cuando A no envía mensaje (N) es I (0 mejor que -1).</li>
+<li>Para A, si B escoge I, su mejor respuesta es M (obtener +2 en lugar de 0).</li>
+<li>Esto sugiere que (M, I) puede ser un Equilibrio de Nash (A no cambiaría a N, pues 0 &lt; +2; B no cambiaría a G, pues +1 &lt; +2).</li>
+<li>Sin embargo, si B es manipulador y siempre hace G (por &quot;personalidad&quot;), cabe la posibilidad de desajustes (pues A se llevaría -2).</li>
+</ul>
+</li>
+<li><strong>Interpretaciones</strong>:
+<ul>
+<li>Enviar o no &quot;ese WhatsApp&quot; a un/a compañero/a de clase para invitarle a estudiar juntos.</li>
+<li>Las ganancias o pérdidas pueden adaptarse: a veces perder es &quot;poner tu dignidad en riesgo&quot; o &quot;sufrir un ghosting&quot;.</li>
+</ul>
+</li>
+</ol>
+<hr>
+
+</body>
+
+</html>
