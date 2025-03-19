@@ -441,3 +441,11 @@ In conclusion, Hidden Markov Models give us a principled way to **"see the invis
 
 [Source: Kaguya-sama: Love is War - Tenor](https://tenor.com/view/kaguya-sama-love-is-war-thinking-planning-strategy-gif-15940231)
 
+
+# Homework
+See one of the following
+1. MDP (MIT) single video (General examples)
++ https://www.youtube.com/watch?v=9g32v7bK3Co
+2. MDP (Computerphile) 2 videos (robots setting)
++ https://www.youtube.com/watch?v=2iF9PRriA7w
++ https://www.youtube.com/watch?v=dZ0SQrr4g8g
