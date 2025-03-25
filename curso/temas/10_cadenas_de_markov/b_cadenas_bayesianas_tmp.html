@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>b_cadenas_bayesianas.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/R%3A%5C2.Travail%5C1.Enseignement%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css"><link rel="stylesheet" href="file:///home/uumami/itam/ia_p25/D%3A%5Crdaros%5CCours%5C_1.Outils%5C2.Developpement%5C1.SCSS%5Cmain.css" type="text/css">
+</head>
+
+<body>
+    <h2 id="conexi%C3%B3n-entre-la-actualizaci%C3%B3n-bayesiana-y-las-cadenas-de-markov">Conexión entre la actualización bayesiana y las cadenas de Markov</h2>
+<p>En la sección anterior (de estadística bayesiana), vimos cómo la inferencia basada en el <strong>Teorema de Bayes</strong> permite <strong>actualizar</strong> la distribución de nuestra creencia sobre un parámetro conforme llegan nuevos datos. Ahora, mostraremos que el proceso de <strong>multiplicar repetidamente</strong> una distribución inicial por la matriz de transición de una <strong>cadena de Markov</strong> es, en esencia, <strong>un proceso bayesiano de actualización iterativa</strong> cuando el estado es directamente observable.</p>
+<blockquote>
+<p><strong>Nota:</strong> Aquí nos referimos a <strong>cadenas de Markov estándar</strong> (no ocultas). En un <strong>Modelo Oculto de Markov (HMM)</strong>, el estado no se observa directamente y el análisis se complica, pero la idea básica de actualización probabilística sigue presente, solo que requiere pasos adicionales (filtrado, etc.).</p>
+</blockquote>
+<hr>
+<h2 id="1-breve-recordatorio-de-cadenas-de-markov-y-notaci%C3%B3n">1. Breve recordatorio de cadenas de Markov y <strong>notación</strong></h2>
+<p>Consideremos una <strong>cadena de Markov</strong> de primer orden con un conjunto finito de estados ${s_1, s_2, \ldots, s_n}$.</p>
+<ol>
+<li>
+<p><strong>Distribución inicial</strong>:</p>
+<ul>
+<li>Denotada como $\alpha^{(0)}$.</li>
+<li>Es un <strong>vector de probabilidad</strong> de dimensión $1 \times n$,<br>
+$\alpha^{(0)} = (\alpha^{(0)}(s_1), \alpha^{(0)}(s_2), \dots, \alpha^{(0)}(s_n))$,<br>
+donde $\alpha^{(0)}(s_i)$ es la probabilidad de que el proceso comience en el estado $s_i$.</li>
+</ul>
+</li>
+<li>
+<p><strong>Matriz de transición</strong> $T$:</p>
+<ul>
+<li>Es una <strong>matriz cuadrada</strong> de tamaño $n \times n$.</li>
+<li>Denotamos sus entradas como $T_{i,j}$, donde cada $T_{i,j}$ indica la probabilidad de pasar del estado $s_i$ al estado $s_j$ en un solo paso:<br>
+$T_{i,j} = P(\text{estado siguiente} = s_j \mid \text{estado actual} = s_i)$.</li>
+<li><strong>Filas</strong>: la fila $i$ de $T$ (es decir, $(T_{i,1}, T_{i,2}, \dots, T_{i,n})$) es la <strong>distribución</strong> del siguiente estado si el estado actual es $s_i$.</li>
+<li>Cada fila $i$ <strong>suma 1</strong>, pues las probabilidades de transición desde $s_i$ a todos los posibles estados se reparten el total de 1.</li>
+</ul>
+</li>
+<li>
+<p><strong>Evolución en el tiempo</strong>:</p>
+<ul>
+<li>Sea $\alpha^{(t)}$ la <strong>distribución</strong> sobre los estados en el tiempo $t$. (Es también un vector fila $1 \times n$.)</li>
+<li>La regla de evolución de la cadena de Markov dice que, en cada paso, aplicamos la matriz de transición:<br>
+$\alpha^{(t+1)} = \alpha^{(t)}T$.</li>
+<li>Explícitamente, para cada estado $s_j$,<br>
+$\alpha^{(t+1)}(s_j) = \sum_{i=1}^{n} \alpha^{(t)}(s_i) \times T_{i,j}$,<br>
+lo cual es un <strong>ejemplo directo</strong> de la <strong>ley de la probabilidad total</strong>: se suman las probabilidades de venir de cada estado $s_i$ ponderado por la probabilidad de transición a $s_j$.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="2-situaci%C3%B3n-conocemos-t-pero-no-sabemos-el-estado-inicial">2. Situación: Conocemos $T$, pero no sabemos el estado inicial</h2>
+<p>Supongamos que tenemos certeza absoluta sobre la <strong>matriz de transición</strong> $T$ (esto es, conocemos perfectamente las probabilidades de pasar de un estado a otro), <strong>pero no</strong> sobre el <strong>estado inicial</strong> de la cadena:</p>
+<ul>
+<li>Podríamos decir que &quot;no sabemos si la cadena arranca en $s_1$, $s_2$, etc.&quot;.</li>
+<li>Por lo tanto, <strong>asignamos una prior</strong> sobre el estado inicial: por ejemplo, una prior uniforme $\alpha^{(0)}$ o cualquier vector de probabilidad que refleje nuestras creencias iniciales.</li>
+</ul>
+<p>Una vez elegida esa prior, <strong>¿cómo evoluciona nuestra creencia sobre el estado</strong> de la cadena con el tiempo? Basta con <strong>multiplicar</strong> sucesivamente $\alpha^{(t)}$ por $T$.</p>
+<h3 id="21-interpretaci%C3%B3n-bayesiana">2.1. Interpretación bayesiana</h3>
+<ol>
+<li><strong>Prior</strong>: $\alpha^{(t)}$ representa nuestras creencias sobre en qué estado se encuentra la cadena en el paso $t$.</li>
+<li><strong>&quot;Likelihood&quot; de transición</strong>: El hecho de que $X_t = s_i$ pase a $X_{t+1} = s_j$ con probabilidad $T_{i,j}$ se comporta como la &quot;verosimilitud&quot; de obtener $s_j$ desde $s_i$.</li>
+<li><strong>Posterior</strong>: Al combinar (mediante la ley de la probabilidad total) la distribución previa $\alpha^{(t)}$ con la transición dada por $T$, obtenemos la <strong>nueva distribución</strong> $\alpha^{(t+1)}$.</li>
+</ol>
+<p>En otros términos, la multiplicación $\alpha^{(t)} \times T$ es la análoga de:<br>
+$\text{Posterior} = \text{Prior} \times \text{Likelihood}$,<br>
+donde no necesitamos un factor de normalización extra porque cada fila de $T$ ya suma 1 (en un problema bayesiano general, ese factor extra aparece explícitamente en el denominador &quot;$\sum_\theta\dots$&quot;).</p>
+<hr>
+<h2 id="3-multiplicaci%C3%B3n-repetida-y-convergencia-a-la-distribuci%C3%B3n-estacionaria">3. Multiplicación repetida y convergencia a la distribución estacionaria</h2>
+<p>En una <strong>cadena de Markov ergódica</strong> (irreducible y aperiódica), existe una <strong>distribución estacionaria</strong> $\pi$ tal que</p>
+<p>$\pi = \pi T$,</p>
+<p>y para cualquier distribución inicial $\alpha^{(0)}$, la iteración $\alpha^{(t+1)} = \alpha^{(t)} T$ <strong>converge</strong> a $\pi$ conforme $t \to \infty$.</p>
+<h3 id="31-interpretaci%C3%B3n-estad%C3%ADstico-bayesiana-de-la-convergencia">3.1. Interpretación estadístico-bayesiana de la convergencia</h3>
+<ul>
+<li>Si seguimos actualizando indefinidamente (multiplicando por $T$), la secuencia de distribuciones ${\alpha^{(t)}}$ se &quot;mezcla&quot; hasta estabilizarse en $\pi$.</li>
+<li>Esta $\pi$ es el <strong>estado estacionario</strong> que describe la probabilidad a largo plazo de estar en cada estado.</li>
+<li>Desde un punto de vista bayesiano, equivale a decir que, partiendo de una prior muy incierta, tras muchas transiciones (y asumiendo que observamos o conocemos la regla de evolución en cada paso), nuestra creencia llega a estabilizarse en $\pi$.</li>
+</ul>
+<blockquote>
+<p><strong>Atención</strong>: Si la cadena <strong>no</strong> es ergódica (por ejemplo, si la matriz de transición no conecta todos los estados o hay periodicidad), es posible que no haya convergencia a una única distribución o que existan múltiples distribuciones estacionarias. De manera análoga, en un escenario bayesiano con información incompleta o no identificable, puede que la actualización no conduzca a un único &quot;consenso&quot;.</p>
+</blockquote>
+<hr>
+<h2 id="4-%22truco%22-de-la-multiplicaci%C3%B3n-de-matrices-como-actualizaci%C3%B3n-bayesiana">4. &quot;Truco&quot; de la multiplicación de matrices como actualización bayesiana</h2>
+<p>En estadística bayesiana, la fórmula de actualización (en su forma más general) es:</p>
+<p>$P(\theta \mid D) = \frac{P(D \mid \theta)P(\theta)}{P(D)}$.</p>
+<p>Si enfocamos la cadena de Markov como un proceso donde $\theta$ es &quot;el estado actual&quot; y &quot;$D$&quot; consiste en &quot;avanzar un paso al siguiente estado&quot;, la matriz $T$ guarda las probabilidades condicionales de la transición. Entonces:</p>
+<p>$\alpha^{(t+1)} = \underbrace{\alpha^{(t)}}<em>{\text{prior sobre }X_t} \times \underbrace{T}</em>{\text{likelihood de }X_{t+1}} ,(\text{implícitamente normalizado, pues cada fila de }T\text{ suma }1)$.</p>
+<h3 id="41-comparaci%C3%B3n-conceptual">4.1. Comparación conceptual</h3>
+<ul>
+<li><strong>Bayes clásico</strong>:<br>
+$\text{Posterior} \propto \text{Likelihood} \times \text{Prior}$.</li>
+<li><strong>Cadena de Markov</strong>:<br>
+$\alpha^{(t+1)} = \alpha^{(t)} \times T$.</li>
+</ul>
+<p>La multiplicación vector-fila $\alpha^{(t)}$ por la matriz $T$ (cuyas filas suman 1) encapsula la misma <strong>lógica</strong>: estamos combinando la distribución previa con las probabilidades condicionales de transición para obtener la distribución posterior.</p>
+<hr>
+<h2 id="5-ejemplo-ilustrativo-muy-breve">5. Ejemplo ilustrativo (muy breve)</h2>
+<p>Imaginemos una cadena de Markov con 3 estados ${s_1, s_2, s_3}$ y la matriz de transición:</p>
+<p>$T =<br>
+\begin{pmatrix}<br>
+0.7 &amp; 0.2 &amp; 0.1\<br>
+0.3 &amp; 0.4 &amp; 0.3\<br>
+0.2 &amp; 0.3 &amp; 0.5<br>
+\end{pmatrix}$.</p>
+<h3 id="51-prior-desconocida-sobre-el-estado-inicial">5.1. Prior desconocida sobre el estado inicial</h3>
+<p>No sabemos en qué estado arrancó la cadena, así que fijamos la prior inicial $\alpha^{(0)} = (0.3, 0.5, 0.2)$. Es decir:</p>
+<ul>
+<li>30% de probabilidad de iniciar en $s_1$,</li>
+<li>50% en $s_2$,</li>
+<li>20% en $s_3$.</li>
+</ul>
+<h3 id="52-un-paso-de-actualizaci%C3%B3n">5.2. Un paso de actualización</h3>
+<p>Para ir al <strong>siguiente</strong> instante (tiempo $t=1$):</p>
+<p>$\alpha^{(1)} = \alpha^{(0)}T$.</p>
+<p>Calculándolo explícitamente (multiplicación fila $\times$ matriz):</p>
+<p>$\begin{aligned}<br>
+\alpha^{(1)}(s_1)<br>
+&amp;= 0.3 \cdot 0.7 + 0.5 \cdot 0.3 + 0.2 \cdot 0.2 \<br>
+&amp;= 0.21 + 0.15 + 0.04 \<br>
+&amp;= 0.40,\<br>
+\alpha^{(1)}(s_2)<br>
+&amp;= 0.3 \cdot 0.2 + 0.5 \cdot 0.4 + 0.2 \cdot 0.3 \<br>
+&amp;= 0.06 + 0.20 + 0.06 \<br>
+&amp;= 0.32,\<br>
+\alpha^{(1)}(s_3)<br>
+&amp;= 0.3 \cdot 0.1 + 0.5 \cdot 0.3 + 0.2 \cdot 0.5 \<br>
+&amp;= 0.03 + 0.15 + 0.10\<br>
+&amp;= 0.28.<br>
+\end{aligned}$</p>
+<p>Así, $\alpha^{(1)} = (0.40, 0.32, 0.28)$. Eso es, en esencia, nuestra <strong>posterior</strong> sobre el estado tras un paso de transición.</p>
+<h3 id="53-convergencia-a-la-distribuci%C3%B3n-estacionaria">5.3. Convergencia a la distribución estacionaria</h3>
+<p>Si repetimos $\alpha^{(t+1)} = \alpha^{(t)} T$ muchas veces (en esta cadena, que es ergódica), obtendremos una distribución $\pi$ que satisface $\pi = \pi T$. Esta $\pi$ es la <strong>distribución estacionaria</strong>, y a ella convergen todas las distribuciones iniciales $\alpha^{(0)}$. De modo análogo, en un escenario bayesiano, si seguimos recibiendo evidencia coherente, nuestra <strong>posterior</strong> puede estabilizarse en una región de alta verosimilitud.</p>
+<hr>
+<h2 id="6-conclusi%C3%B3n">6. Conclusión</h2>
+<ol>
+<li><strong>Multiplicar</strong> un vector de probabilidades $\alpha^{(t)}$ por la <strong>matriz de transición</strong> $T$ en una cadena de Markov <strong>equivale</strong> a un <strong>proceso de actualización</strong> de creencias probabilísticas:<br>
+$\alpha^{(t+1)} = \alpha^{(t)} \times T$.</li>
+<li>En la <strong>interpretación bayesiana</strong>, $\alpha^{(t)}$ es la <strong>distribución posterior</strong> sobre el estado en el tiempo $t$, y el producto con $T$ refleja la <strong>regla de Bayes</strong> (ley de probabilidad total) para el paso de $t$ a $t+1$.</li>
+<li>Si la cadena es <strong>ergódica</strong>, este proceso <strong>converge</strong> a la distribución estacionaria $\pi$, es decir, a la creencia &quot;a largo plazo&quot; sobre en qué estado se encuentra el sistema.</li>
+<li>Si <strong>no</strong> hay ergodicidad, la convergencia puede no existir o depender de la prior, al igual que en un escenario bayesiano donde los datos no discriminan suficientemente entre hipótesis.</li>
+</ol>
+<p>En síntesis, el &quot;<strong>truco</strong>&quot; de seguir multiplicando la distribución sobre estados por la matriz de transición es un <strong>caso particular</strong> (y fundamental) de la <strong>actualización bayesiana</strong>: cada &quot;paso&quot; re-calcula la probabilidad de los estados futuros a partir de la probabilidad de los estados presentes y las probabilidades condicionales de transición (que ejercen el rol de &quot;likelihood&quot;). Cuando la cadena es ergódica, este procedimiento converge a un punto fijo (la distribución estacionaria), que resulta análogo a cómo, en inferencia bayesiana, una gran cantidad de datos puede llevar a una posterior muy concentrada (o estable) en una región específica.</p>
+
+</body>
+
+</html>
