@@ -1,6 +1,5 @@
 
-
-## Conexión entre la actualización bayesiana y las cadenas de Markov
+# Conexión entre la actualización bayesiana y las cadenas de Markov
 
 En la sección anterior (de estadística bayesiana), vimos cómo la inferencia basada en el **Teorema de Bayes** permite **actualizar** la distribución de nuestra creencia sobre un parámetro conforme llegan nuevos datos. Ahora, mostraremos que el proceso de **multiplicar repetidamente** una distribución inicial por la matriz de transición de una **cadena de Markov** es, en esencia, **un proceso bayesiano de actualización iterativa** cuando el estado es directamente observable.
 
