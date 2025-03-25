@@ -13,12 +13,35 @@ A **Hidden Markov Model (HMM)** is a statistical model where the system being mo
 
 [Source: Wikimedia Commons - Hidden Markov Model](https://commons.wikimedia.org/wiki/File:Hmm_temporal_bayesian_net.svg)
 
+In mathematical terms, an HMM consists of:
+
+1. A **hidden state sequence** $x_1, x_2, \ldots, x_T$ that follows a Markov chain (each $x_t$ depends only on $x_{t-1}$).
+2. An **observation sequence** $y_1, y_2, \ldots, y_T$, where each $y_t$ depends on $x_t$.
+
+We typically denote the transition probabilities as $P(x_{t+1} = s' \mid x_t = s)$ and the emission probabilities as $P(y_t = o \mid x_t = s)$. The Markov property remains for the **hidden states** $x_t$, but we only observe $y_t$. This is the core difference from a standard Markov chain, where states are fully visible.
+
 ### Key Components
 
 1. **Hidden States**: The sequence of states that the system can be in (x₁, x₂, ..., xₙ)
 2. **Observations**: The visible outputs we can measure (y₁, y₂, ..., yₙ)
 3. **Transition Probabilities**: The probability of moving from one hidden state to another
 4. **Emission Probabilities**: The probability of observing a particular output given a hidden state
+
+### 1.1 Formal/Mathematical Definitions
+An HMM is often specified by $\lambda = (S, O, T, E)$ where:
+
+* $S$ is the **set of hidden states**, e.g. $S = \{s_1, s_2, \ldots, s_N\}$.
+* $O$ is the **set of possible observations**, e.g. $O = \{o_1, o_2, \ldots, o_M\}$.
+* $T = \{t_{ij}\}$ is the **state transition matrix**, where $t_{ij} = P(x_{t+1}=s_j \mid x_t=s_i)$, $\sum_{j=1}^N t_{ij} = 1$.
+* $E = \{e_{i}(o)\}$ is the **emission probability** for observing $o\in O$ from state $s_i$, i.e. $e_{i}(o) = P(y_t = o \mid x_t = s_i)$, $\sum_{o\in O} e_i(o) = 1$.
+
+**Joint Distribution** Under an HMM, the joint probability of a state sequence $\{x_t\}$ and observation sequence $\{y_t\}$ factors as:
+
+$P(x_1,\ldots,x_T,\,y_1,\ldots,y_T) = P(x_1)\,\prod_{t=1}^{T-1}P(x_{t+1}\mid x_t)\;\prod_{t=1}^T P(y_t\mid x_t)$.
+
+Here, $P(x_1)$ can be given by some initial distribution over states (often denoted $\pi$).
+
+**Intuition**: The hidden states $\{x_t\}$ form a Markov chain. Each state emits an observation with probability $e_i(o)$. We see the **observations** $\{y_t\}$ but do not observe $\{x_t\}$ directly—hence *hidden*.
 
 
 ### Application: Speech Recognition
@@ -104,6 +127,12 @@ Designing an HMM for a real-world problem means deciding what the hidden states 
 
 Building an HMM means **modeling a partially observable, stochastic environment**. "Partially observable" because the agent cannot directly see the state ([](http://katselis.web.engr.illinois.edu/ECE586/POMDPs.pdf#:~:text=%E2%80%A2%20Autonomous%20Systems%3A%20Markov%20chains,observable%20Markov%20processes%20of%20the)); "stochastic" because state transitions and observations are probabilistic, not deterministic. We thus embrace uncertainty in both how the state evolves and how observations are generated. This is powerful for AI because many real-world processes have hidden factors and randomness. 
 
+**Mathematical Note on Parameter Estimation** If labeled data is available (i.e., we know which hidden state was active at each time), we can estimate:
+
+$\hat{t}_{ij} = \frac{\text{\#(transitions from } s_i \text{ to } s_j)} {\text{\#(total transitions from } s_i)}$, $\hat{e}_i(o) = \frac{\text{\#(times state } s_i \text{ emitted } o)} {\text{\#(total emissions from } s_i)}$.
+
+If data is unlabeled, we use algorithms like **Baum-Welch** to learn $\hat{t}_{ij}$ and $\hat{e}_i(o)$ by iteratively maximizing the likelihood of the observed sequences.
+
 Let's connect this to some concrete scenarios:
 
 - **Game Strategy Inference:** Consider a multiplayer video game or a board game. Your opponent's true strategy (aggressive, defensive, bluffing, etc.) is hidden. You see only their moves (observations). An AI agent could use an HMM where states represent the opponent's strategy or "type" ([](https://arxiv.org/pdf/1404.0086#:~:text=way%2C%20and%20know%20that%20each,observations%20of%20the%20players%20actions)), and observations are their actions each turn. By modeling transition probabilities, the AI can infer if the opponent is likely to switch strategies mid-game. For example, in **poker**, an opponent's cards and whether they are bluffing are hidden states; their betting behaviors are observations. Over rounds, an HMM can help detect patterns (maybe a certain betting pattern suggests a bluff state) and update the AI's belief about the opponent's hand strength. This is essentially a simplified *game theory* application of HMMs: it's like a repeated game with incomplete information, which can be modeled by an HMM where the hidden state encodes the opponent's private information ([](https://arxiv.org/pdf/1404.0086#:~:text=way%2C%20and%20know%20that%20each,observations%20of%20the%20players%20actions)).
@@ -146,6 +175,209 @@ Mathematically, the core computations involve a lot of summing and multiplying p
 *Figure 3: The Viterbi algorithm finds the most likely state sequence through a trellis of possibilities. Each node represents a state at a particular time, and edges show transitions. The algorithm efficiently computes the best path (highlighted) by keeping track of the maximum probability path to each state.*
 
 [Source: Viterbi Algorithm - Wikimedia Commons](https://en.wikipedia.org/wiki/Viterbi_algorithm)
+
+
+## 3.1 Formal Definitions
+
+Below is a **refined** presentation of the three core HMM algorithms—Forward, Viterbi, and Baum–Welch—complete with **practical recommendations** on **when** and **why** to use each, **interpretation** of their inputs/outputs, and **Kaguya-sama story** elements illustrating their application. We start with a high-level overview—**why** each algorithm exists—then provide formal details and intuitive examples.
+
+---
+
+### 3.1.0 Overview: Which Algorithm, When, and Why?
+
+An HMM $\lambda = (S,O,T,E,\pi)$ describes:
+
+- Hidden states $S$.  
+- Observations $O$.  
+- Transition matrix $T$ with entries $t_{ij} = P(x_{t+1}=s_j \mid x_t=s_i)$.  
+- Emission probabilities $E$ with $e_i(o) = P(y_t=o \mid x_t=s_i)$.  
+- Initial state distribution $\pi$.  
+
+**We often want** to:
+
+1. **Check if an HMM can plausibly produce a given observation sequence** (the **Evaluation** problem).  
+2. **Find the single best hidden-state path** explaining the observations (the **Decoding** problem).  
+3. **Learn or refine HMM parameters** from unlabeled data (the **Learning** problem).
+
+The **Forward** algorithm solves (1) by calculating $P(y_{1:T})$. The **Viterbi** algorithm solves (2) by finding $\hat{x}_{1:T}$. The **Baum–Welch** algorithm solves (3) by iteratively adjusting $\{t_{ij}, e_i\}$ (and possibly $\pi$) to maximize likelihood.
+
+---
+
+#### Practical Recommendations
+
+- **Use Forward** if:  
+  1. You already have an HMM (with known transitions/emissions) and want to see "How likely is this observation sequence under my model?"  
+  2. You need a **score** to compare multiple candidate HMMs for the same data (model selection).  
+  3. You want to detect anomalies: if $P(y_{1:T})$ is too low, the observation might be surprising or outside your model's scope.
+
+- **Use Viterbi** if:  
+  1. You need to **label** each time step with the single most probable hidden state (like speech recognition "which phoneme at each frame?").  
+  2. You want a "hard decode": an unambiguous guess of the hidden-state sequence.  
+  3. You have a fixed HMM but your decision/policy depends on which hidden state is likely active now (e.g., you must act differently if the user is "frustrated" vs. "happy").
+
+- **Use Baum–Welch** if:  
+  1. You have observation sequences **without** known hidden states.  
+  2. You want to train or fine-tune the transition and emission probabilities to better fit real data.  
+  3. You suspect your initial guess is inaccurate—this iterative algorithm can converge to a better model.
+
+In the **Kaguya-sama** storyline context:
+
+- If Kaguya *thinks* she has a good HMM for Shirogane's moods but wonders how likely it is to see certain behaviors across a week, she'd run **Forward**.  
+- If she wants to guess "On which exact day was he definitely in *Confession-Preparation* mode?" she'd use **Viterbi** to find the best day-by-day hidden-state path.  
+- If she only has logs of his outward actions (blushing, calm, teasing, etc.) over months but no labeled data about his internal feelings, **Baum–Welch** helps refine an initially guessed model.
+
+---
+
+### 3.1.1 Forward Algorithm
+
+#### Purpose  
+Evaluates $P(y_1,\dots,y_T)$ under a known HMM. Answering "How well does this HMM explain these observations?" is key for **model scoring**, **anomaly detection**, or **partial computations** (e.g., forward-backward).
+
+#### Inputs  
+1. **HMM parameters**: $\{t_{ij}\}, \{e_i(o)\}, \{\pi_i\}$.  
+2. **Observation sequence** $\{y_1,\dots,y_T\}$.  
+3. Possibly the sequence length $T$.
+
+#### Outputs  
+- **Likelihood**: A single numeric value $P(y_{1:T})$.
+
+#### Where These Inputs Come From  
+- $\pi_i$, $t_{ij}$, and $e_i(o)$ typically come from:
+  - **Domain knowledge** (Kaguya "guesses" how likely Shirogane transitions from "studying" to "confessing").  
+  - **Previously learned** or trained parameters.  
+  - **Uniform** or random if no prior knowledge.  
+- Observations $\{y_t\}$ come from the real sequence we want to assess.
+
+#### Algorithm (Formal + Pseudocode)
+
+$\textbf{Forward}(\lambda, y_{1:T}):$
+1. **Initialization**: 
+   $\alpha_1(i)=\pi_i\,e_i(y_1)\quad\forall i.$
+2. **Recursion** $(t=1\to T-1)$: 
+   $\alpha_{t+1}(j)=\left[\sum_i\alpha_t(i)\,t_{ij}\right]\cdot e_j(y_{t+1}).$
+3. **Termination**: 
+   $P(y_{1:T})=\sum_i \alpha_T(i).$
+
+#### Intuition  
+Forward "accumulates" probability across all possible hidden-state paths. We avoid enumerating $N^T$ paths by dynamic programming: at each step, $\alpha_{t+1}(j)$ is the total partial probability of reaching state $j$ at time $t+1$ and emitting $y_{t+1}$.
+
+#### Kaguya-sama Mini-Example  
+
+1. **Why**: Kaguya wonders, "Given my guessed probabilities of Shirogane's daily mood transitions and outward actions, how plausible is it that I'd see the sequence $(\text{Blush}, \text{Tease}, \text{Calm})$ over 3 days?"  
+2. **Input**:  
+   - $\pi\approx$ "He's 60% likely to start in 'Confession-prep' any day and 40% in 'Casual'."  
+   - $t_{ij}\approx$ "From Confession-prep to Confession-prep is 70%, to Casual is 30%," etc.  
+   - $e_i(\text{Blush})\approx0.6$ if in "Confession-prep," etc.  
+3. **Run**: She calculates $\alpha_1(i)$, then $\alpha_2,\alpha_3$.  
+4. **Output**: If $\sum_i \alpha_3(i)\approx0.09$, that's the probability.  
+5. **Interpretation**: If it's very low, maybe her guess for how Shirogane transitions moods is wrong. If it's high, her HMM is consistent with this observed "Blush, Tease, Calm" pattern.
+
+---
+
+### 3.1.2 Viterbi Algorithm
+
+#### Purpose  
+Finds the **most likely single hidden-state path** $\hat{x}_{1:T}$. In many applications (like speech recognition or daily mood inference), we want a definitive guess of what the hidden state was at each time.
+
+#### Inputs  
+1. **Known** HMM parameters $\{t_{ij}, e_i(o), \pi_i\}$.  
+2. **Observed** sequence $\{y_{1},\dots,y_T\}$.  
+
+#### Where These Inputs Come From  
+- Same as Forward, we typically have $\pi, T, E$ from domain knowledge or prior training.  
+- The observation sequence is the data we want to decode—like Kaguya's daily notes of Shirogane's outward gestures.
+
+#### Output  
+- $\hat{x}_{1:T}$, the single best (highest-probability) hidden-state sequence.  
+- Optionally, the path probability $\delta_T(\hat{x}_T)$.
+
+#### Algorithm (Formal + Pseudocode)
+
+$\textbf{Viterbi}(\lambda, y_{1:T}):$
+1. **Initialization**: 
+   $\delta_1(j)=\pi_j\,e_j(y_1),\;\psi_1(j)=0.$
+2. **Recursion** $(t=1\to T-1)$:  
+   $\delta_{t+1}(j) = \left[\max_i \delta_t(i)\,t_{ij}\right]\;e_j(y_{t+1}), \quad \psi_{t+1}(j)=\arg\max_i \delta_t(i)\,t_{ij}.$
+3. **Termination & Path**:  
+   $P_{\text{best}}=\max_j \delta_T(j),\quad \hat{x}_T=\arg\max_j \delta_T(j), \quad \hat{x}_{t}=\psi_{t+1}(\hat{x}_{t+1})\ (t=T-1\downarrow1).$
+
+#### Intuition  
+Rather than summing over all paths (as in Forward), we keep track of *one best path* for each state at each time ($\delta_t$). We pick whichever previous state $\delta_{t}(i)\,t_{ij}$ is largest, then multiply by the emission probability.
+
+#### Kaguya-sama Mini-Example
+
+1. **Why**: Now Kaguya wants a day-by-day hidden-state *label*. "Which day was he in 'Serious Confession' mode vs. 'Casual Studying'?" She suspects it helps her plan how to respond.  
+2. **Input**: Same guessed HMM parameters, plus the same observation log.  
+3. **Run**: She does $\delta_1(\cdot)$ for day1, recurses for day2, day3, storing back pointers $\psi$.  
+4. **Output**: A single path (e.g. "Day1:Confession-Prep, Day2:Casual, Day3:Confession-Prep").  
+5. **Interpretation**: She can revolve her *current day's strategy* around the likely state (is he on the brink of confessing?). Viterbi thus helps Kaguya make a "hard decision" about Shirogane's mental state.
+
+---
+
+### 3.1.3 Baum–Welch Algorithm
+
+#### Purpose  
+**Learning** or **refining** the HMM parameters $\{t_{ij}, e_i(\cdot)\}$ from **unlabeled** sequences. If we do not know the hidden states for each observation, or suspect our transitions are off, we run Baum–Welch (an EM approach) to find a local maximum of the likelihood $P(\{y_{1:T}\}\mid \lambda)$.
+
+#### Inputs  
+1. **Observation sequences**: $\{y_t\}$ (one or many).  
+2. **Initial** parameter guess: $\pi_i^{(0)}$, $t_{ij}^{(0)}$, $e_i^{(0)}(o)$. Possibly random or from partial knowledge.
+
+#### Where These Inputs Come From  
+- If Kaguya only has a diary of Shirogane's outward actions over months (no labeled moods), she must guess an initial HMM. For instance, pick 2 hidden states (Confession vs. Casual) or 3 states if she believes in an extra "Actively Denying Feelings" state. She sets uniform or random $\{t_{ij}, e_i(o)\}$.
+
+#### Outputs  
+- **Refined** $\hat{t}_{ij}, \hat{e}_i(o)$ (and $\hat{\pi}_i$ if needed).  
+- Potentially, an updated model that yields a better $P(\{y_{t}\})$.
+
+#### Algorithm (Formal + Pseudocode)
+
+- **E-step**:  
+  - Run **Forward**($\alpha_t(i)$) and **Backward**($\beta_t(i)$) to compute probabilities $P(x_t=s_i\mid y_{1:T})$ and $P(x_t=s_i, x_{t+1}=s_j\mid y_{1:T})$.  
+  - Let $\gamma_t(i)=\frac{\alpha_t(i)\beta_t(i)}{P(y_{1:T})}$, $\xi_t(i,j)=\dots$.
+- **M-step**:
+  $\hat{t}_{ij} = \frac{\sum_{t=1}^{T-1}\xi_t(i,j)}{\sum_{t=1}^{T-1}\gamma_t(i)}, \quad \hat{e}_j(o) = \frac{\sum_{t:\,y_t=o}\gamma_t(j)}{\sum_{t=1}^T\gamma_t(j)}.$
+- **Repeat** until convergence.
+
+#### Intuition  
+You "pretend" each observation partly belongs to each hidden state, weighted by the posterior $\gamma_t(i)$. Then you reestimate how often each transition or emission occurs. Over iterations, the HMM's parameters adjust to better fit the data.
+
+#### Kaguya-sama Mini-Example
+
+1. **Why**: Kaguya has no labeled data—she just knows daily "Blush/Tease/Calm" logs. She doesn't know if Shirogane was "Confessing" or "Indifferent." She wants to discover plausible transitions/emissions.  
+2. **Input**: She picks $\pi^{(0)}$ = uniform, $t_{ij}^{(0)}$ = 0.5, etc. (random or partial guess).  
+3. **Run**: Each iteration, she:  
+   - **Forward-Backward** to find how likely each hidden state was at each day, given the current guess.  
+   - Recompute $\hat{t}_{ij}$ by summing over expected transitions from state $i\to j$.  
+   - Recompute $\hat{e}_i(o)$ by summing how often a state $i$ "would have" emitted observation $o$.  
+4. **Output**: After many iterations, she ends with a refined model, e.g. "The chance to remain in Confession mode is 80% if he's already in it," "Blush is 60% likely if in Confession mode," etc.  
+5. **Interpretation**: She sees a stable set of parameters. Possibly she learns that "Shirogane rarely transitions from Indifferent to Confession in consecutive days," reflecting real patterns she never hand-coded. This final HMM is more data-aligned.
+
+---
+
+## Summary of Section 3.1
+
+Each algorithm addresses a distinct question under an HMM:
+
+1. **Forward** (Evaluation): "How likely is it that the hidden states produce these observations?"  
+   - *Use it* if you want a **likelihood score** or **to confirm** your guessed model isn't absurd.  
+   - *Interpretation*: If the score is high, your model's transitions/emissions plausibly generate the data. If low, you might have the wrong assumptions.
+
+2. **Viterbi** (Decoding): "What's the single best hidden-state path?"  
+   - *Use it* if you must **act or decide** based on a specific guess of the hidden state.  
+   - *Interpretation*: If Kaguya sees the path is mostly "Confession mode," she might change her strategy (maybe reciprocate or tease). If it's "Indifferent," she waits.
+
+3. **Baum–Welch** (Learning): "How do we refine or learn an HMM from unlabeled observations?"  
+   - *Use it* if you have **only** observation logs (no state labels) and need to find suitable $\{t_{ij}, e_i\}$.  
+   - *Interpretation*: The algorithm iteratively improves the model so it better explains the data. After convergence, you have a more accurate HMM for future forward/Viterbi tasks.
+
+In **Kaguya-sama** terms, these algorithms empower Kaguya to:
+
+- Check if her mental model (Forward) matches observed behaviors,  
+- Pinpoint on which day(s) Shirogane was truly in "Confession prep" (Viterbi),  
+- Learn new transitions if she's uncertain about his hidden states altogether (Baum–Welch).
+
+By combining these three algorithms, we can comprehensively handle **inference**, **decoding**, and **learning** in partially observable scenarios—a cornerstone capability for AI agents operating under uncertainty.
 
 
 ## 4. Inference and AI Agents  
@@ -209,3 +441,11 @@ In conclusion, Hidden Markov Models give us a principled way to **"see the invis
 
 [Source: Kaguya-sama: Love is War - Tenor](https://tenor.com/view/kaguya-sama-love-is-war-thinking-planning-strategy-gif-15940231)
 
+
+# Homework
+See one of the following
+1. MDP (MIT) single video (General examples)
++ https://www.youtube.com/watch?v=9g32v7bK3Co
+2. MDP (Computerphile) 2 videos (robots setting)
++ https://www.youtube.com/watch?v=2iF9PRriA7w
++ https://www.youtube.com/watch?v=dZ0SQrr4g8g
