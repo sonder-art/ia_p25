@@ -12,8 +12,9 @@ La programacion dinamica es especialmente util en problemas de optimizacion, don
 #### 1.1.1 Formulacion Intuitiva
 Definimos:
 
-$W(n) = \text{el número de formas distintas de subir desde el escalón 0 hasta el escalón } n$
-$\quad\quad\quad\quad \text{donde cada movimiento es un paso de 1 escalón o un paso de 2 escalones.}$
+$W(n) = \text{el número de formas distintas de subir desde el escalón 0 hasta el escalón } n$  
+
+donde cada movimiento es un paso de 1 escalón o un paso de 2 escalones.
 
 - **"Formas distintas"** significa secuencias diferentes de movimientos. Por ejemplo,  
   - Tomar $(1,1,1)$ para llegar al escalón 3 es diferente de tomar $(2,1)$, aunque ambos te lleven al escalón 3.
