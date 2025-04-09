@@ -230,7 +230,7 @@ A continuación se presentan **definiciones de problemas** que se prestan al enf
   $\text{Dist}(u) = \min_{(u,v)\in E} [w(u,v) + \text{Dist}(v)].$  
 - Esto es esencialmente el enfoque DP para caminos más cortos, utilizado en el algoritmo de Bellman–Ford.
 
-## 9.2. Problema de la Mochila
+## 9.2. Problema de la Mochila (Knapsack Problem)
 
 - **Configuración**: Tenemos $n$ elementos, cada uno con un peso $w_i$ y valor $v_i$, y una capacidad máxima $W$. Queremos empaquetar elementos para **maximizar el valor total** sin exceder la capacidad $W$.  
 - **Estados**: Un enfoque común es definir un estado como $(i, \text{cap})$, que significa "estamos considerando elementos hasta el índice $i$ con capacidad actual $\text{cap}$."  
@@ -249,7 +249,7 @@ A continuación se presentan **definiciones de problemas** que se prestan al enf
   $V(s) = \max_{a \in A(s)} [R(s,a) + \gamma \sum_{s'} p(s' \mid s,a)\, V(s')].$  
 - Esto es exactamente cómo se deriva la **iteración de valor** en el aprendizaje por refuerzo.
 
-## 9.4. Programación de Trabajos con Plazos
+## 9.4. Job Scheduling con Deadlines
 
 - **Configuración**: Un conjunto de trabajos, cada uno con un tiempo de procesamiento y un plazo (y posiblemente una ganancia). Quieres programar trabajos en una sola máquina para **maximizar la ganancia total** o **minimizar el retraso**.  
 - **Estados**: El conjunto (o índice) de trabajos restantes por programar, y el intervalo de tiempo actual o la siguiente posición del trabajo.  
