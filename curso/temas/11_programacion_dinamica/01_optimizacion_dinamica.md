@@ -2,7 +2,7 @@
 
 **Richard Bellman** introdujo el **Principio de Optimalidad**, que, en lenguaje sencillo, establece:
 
-> **"Una política óptima tiene la propiedad de que *sin importar* el estado inicial o la decisión, las decisiones restantes deben formar por sí mismas una política óptima para el estado resultante."**
+> **Un principio de optimalidad afirma que una política óptima tiene la propiedad de que, cualquiera que sea el estado inicial y la decisión inicial, las decisiones restantes deben constituir una política óptima con respecto al estado resultante de la primera decisión.**
 
 Esto no es solo una afirmación elegante—es una visión profunda que permite que las decisiones **locales** se encadenen en un óptimo **global**. Siempre que tengas un problema en el que cada elección lleva a un subproblema más pequeño del mismo tipo, el principio sugiere que *si estás buscando el mejor resultado general, debes hacer el mejor movimiento siguiente, combinado con los mejores movimientos posteriores.*
 
