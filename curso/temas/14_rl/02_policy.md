@@ -24,17 +24,26 @@ Un agente se encuentra en un corredor de 3 celdas: Izquierda (L), Medio (M), Der
 
 Definimos el MDP $(\mathcal{S},\mathcal{A},P,R,\gamma)$:
 
-1. **Probabilidades de transición**: Deterministas - moverse en la dirección indicada o quedarse en el mismo lugar si se llega a un límite.
+1. **Probabilidades de transición $P(s'|s,a)$**: Son deterministas. Si el agente intenta moverse a una celda válida, lo logra; si intenta moverse contra un límite (izquierda desde L, derecha desde R), se queda en la misma celda. El estado T es terminal. Específicamente:
+    *   $P(L | L, \text{Left}) = 1$
+    *   $P(M | L, \text{Right}) = 1$
+    *   $P(L | M, \text{Left}) = 1$
+    *   $P(R | M, \text{Right}) = 1$
+    *   $P(M | R, \text{Left}) = 1$
+    *   $P(T | R, \text{Right}) = 1$
+    *   Para todas las demás combinaciones de $(s, a, s')$, $P(s'|s,a) = 0$.
+    *   Una vez en T, el episodio termina. $V(T) = 0$.
 
-2. **Función de recompensa**:
+2. **Función de recompensa $R(s,a,s')$**: Se recibe una recompensa de -1 por cada paso, excepto cuando se llega al estado terminal T, donde la recompensa es 0.
    $
    R(s,a,s') = \begin{cases}
-     -1 & \text{para cualquier transición que no lleve a }T,\\
-     0  & \text{para transiciones hacia }T.
+      -1 & \text{si } s' \neq T \\
+      0  & \text{si } s' = T
    \end{cases}
    $
+    (Nota: En la práctica, la recompensa se asocia a menudo solo con el estado de llegada $s'$, o con la tupla $(s, a, s')$ como aquí).
 
-3. **Factor de descuento**: $\gamma = 0.9$.
+3. **Factor de descuento**: $\gamma = 0.9$. Un valor menor que 1 asegura que las recompensas futuras valen menos que las inmediatas y que los valores convergen.
 
 ---
 
@@ -72,43 +81,153 @@ $\mu(a|s) = \begin{cases} 0.8 & \text{si } a = \text{Right} \\ 0.2 & \text{si } 
 
 ## 5. Ecuaciones de Bellman para Ambas Políticas
 
-### Ecuaciones de Bellman para $\pi$
-Dado que $\pi$ siempre elige Right:
+Las ecuaciones de Bellman relacionan el valor de un estado (o par estado-acción) con los valores de los estados sucesores. Son la base para calcular las funciones de valor $V$ y $Q$.
 
+### Ecuaciones de Bellman para la política $\pi$ (Siempre Derecha)
+
+La ecuación general para $V^{\pi}(s)$ es:
 $V^{\pi}(s) = \sum_{a} \pi(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$
 
-Que se simplifica a:
-
+Dado que $\pi(\text{Right}|s) = 1$ y $\pi(\text{Left}|s) = 0$ para $s \in \{L, M, R\}$:
 $V^{\pi}(s) = \sum_{s'} P(s'|s,\text{Right})[R(s,\text{Right},s') + \gamma V^{\pi}(s')]$
 
-### Ecuaciones de Bellman para $\mu$
-Como $\mu$ puede elegir ambas acciones:
+Aplicando a nuestros estados (recordando que $V^{\pi}(T)=0$):
+*   **Estado L**: $V^{\pi}(L) = P(M|L,\text{Right})[R(L,\text{Right},M) + \gamma V^{\pi}(M)] = 1 \times [-1 + 0.9 V^{\pi}(M)]$
+*   **Estado M**: $V^{\pi}(M) = P(R|M,\text{Right})[R(M,\text{Right},R) + \gamma V^{\pi}(R)] = 1 \times [-1 + 0.9 V^{\pi}(R)]$
+*   **Estado R**: $V^{\pi}(R) = P(T|R,\text{Right})[R(R,\text{Right},T) + \gamma V^{\pi}(T)] = 1 \times [0 + 0.9 \times 0] = 0$
+    *   *Corrección*: La recompensa al llegar a T es 0, pero la transición *desde* R ocurre *antes* de llegar. La recompensa asociada a la *acción* de ir de R a T es -1 (el último paso), aunque el valor de T sea 0. Así, la ecuación correcta es:
+    *   **Estado R (corregido)**: $V^{\pi}(R) = P(T|R,\text{Right})[R(R,\text{Right},T) + \gamma V^{\pi}(T)] = 1 \times [-1 + 0.9 \times 0] = -1.0$
 
+Resolviendo el sistema (de abajo hacia arriba):
+1.  $V^{\pi}(R) = -1.0$
+2.  $V^{\pi}(M) = -1 + 0.9 V^{\pi}(R) = -1 + 0.9 (-1.0) = -1 - 0.9 = -1.9$
+3.  $V^{\pi}(L) = -1 + 0.9 V^{\pi}(M) = -1 + 0.9 (-1.9) = -1 - 1.71 = -2.71$
+
+### Ecuaciones de Bellman para la política $\mu$ (Exploratoria: 80% Derecha, 20% Izquierda)
+
+La ecuación general para $V^{\mu}(s)$ es:
 $V^{\mu}(s) = \sum_{a} \mu(a|s) \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\mu}(s')]$
 
-Que se expande a:
-
+Aplicando a nuestros estados ($\mu(\text{Right}|s)=0.8$, $\mu(\text{Left}|s)=0.2$):
 $V^{\mu}(s) = 0.8 \sum_{s'} P(s'|s,\text{Right})[R(s,\text{Right},s') + \gamma V^{\mu}(s')] + 0.2 \sum_{s'} P(s'|s,\text{Left})[R(s,\text{Left},s') + \gamma V^{\mu}(s')]$
+
+*   **Estado L**:
+    $V^{\mu}(L) = 0.8 [P(M|L,\text{Right})(R(L,\text{Right},M) + \gamma V^{\mu}(M))] + 0.2 [P(L|L,\text{Left})(R(L,\text{Left},L) + \gamma V^{\mu}(L))]$
+    $V^{\mu}(L) = 0.8 [-1 + \gamma V^{\mu}(M)] + 0.2 [-1 + \gamma V^{\mu}(L)]$
+*   **Estado M**:
+    $V^{\mu}(M) = 0.8 [P(R|M,\text{Right})(R(M,\text{Right},R) + \gamma V^{\mu}(R))] + 0.2 [P(L|M,\text{Left})(R(M,\text{Left},L) + \gamma V^{\mu}(L))]$
+    $V^{\mu}(M) = 0.8 [-1 + \gamma V^{\mu}(R)] + 0.2 [-1 + \gamma V^{\mu}(L)]$
+*   **Estado R**:
+    $V^{\mu}(R) = 0.8 [P(T|R,\text{Right})(R(R,\text{Right},T) + \gamma V^{\mu}(T))] + 0.2 [P(M|R,\text{Left})(R(R,\text{Left},M) + \gamma V^{\mu}(M))]$
+    $V^{\mu}(R) = 0.8 [-1 + \gamma \times 0] + 0.2 [-1 + \gamma V^{\mu}(M)]$
+    $V^{\mu}(R) = -0.8 + 0.2 [-1 + 0.9 V^{\mu}(M)]$
+
+Sustituyendo $\gamma=0.9$:
+1.  $V^{\mu}(L) = 0.8 [-1 + 0.9 V^{\mu}(M)] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+2.  $V^{\mu}(M) = 0.8 [-1 + 0.9 V^{\mu}(R)] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+3.  $V^{\mu}(R) = -0.8 + 0.2 [-1 + 0.9 V^{\mu}(M)]$
+
+Este es un sistema de 3 ecuaciones lineales con 3 incógnitas ($V^{\mu}(L), V^{\mu}(M), V^{\mu}(R)$). Resolviéndolo (por sustitución o métodos matriciales) obtenemos los valores aproximados mencionados más adelante.
+
+### Ecuación de Bellman de Optimalidad (Base para Q-learning)
+
+Q-learning no calcula $V^{\pi}$ o $V^{\mu}$ directamente, sino que busca la función de valor-acción óptima $Q^*(s, a)$, que satisface la ecuación de Bellman de optimalidad:
+
+$Q^*(s, a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma \max_{a'} Q^*(s', a')]$
+
+Esta ecuación establece que el valor óptimo de tomar la acción $a$ en el estado $s$ es la recompensa inmediata más el valor descontado del *mejor* valor Q posible desde el siguiente estado $s'$. Q-learning utiliza esta relación para actualizar sus estimaciones de $Q^*$.
 
 ---
 
-## 6. Comparación de Valores
+## 6. Comparación de Valores y Cálculo Detallado
 
-### Valores bajo la política óptima $\pi$
-Si siempre vamos a la derecha (siguiendo $\pi$):
-- Desde M, llegamos a T en dos pasos: M → R → T
-- $V^{\pi}(M) = -1.9$
-- $V^{\pi}(R) = -1.0$
-- $Q^{\pi}(M,\text{Right}) = -1.9$
-- $Q^{\pi}(M,\text{Left}) = -2.71$ (porque después del primer paso, seguiríamos $\pi$)
+Aquí calcularemos explícitamente los valores V y Q para ambas políticas.
 
-### Valores bajo la política exploratoria $\mu$
-Si seguimos $\mu$ (80% derecha, 20% izquierda):
-- A veces tomaremos desvíos: M → L → M → R → T
-- $V^{\mu}(M) \approx -2.3$ (peor que $V^{\pi}(M)$ porque a veces tomamos acciones subóptimas)
-- $V^{\mu}(R) \approx -1.2$ (peor que $V^{\pi}(R)$ por la misma razón)
-- $Q^{\mu}(M,\text{Right}) \approx -2.1$
-- $Q^{\mu}(M,\text{Left}) \approx -3.0$
+### Valores bajo la política óptima $\pi$ (Siempre Derecha)
+
+Ya resolvimos el sistema para $V^{\pi}$ en la sección anterior:
+*   $V^{\pi}(R) = -1.0$
+*   $V^{\pi}(M) = -1.9$
+*   $V^{\pi}(L) = -2.71$
+
+Ahora calculemos los valores $Q^{\pi}(s,a)$ usando la definición:
+$Q^{\pi}(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\pi}(s')]$
+
+*   **Estado L**:
+    *   $Q^{\pi}(L, \text{Left}) = P(L|L,\text{Left})[R(L,\text{Left},L) + \gamma V^{\pi}(L)] = 1 \times [-1 + 0.9(-2.71)] = -1 - 2.439 = -3.439$
+    *   $Q^{\pi}(L, \text{Right}) = P(M|L,\text{Right})[R(L,\text{Right},M) + \gamma V^{\pi}(M)] = 1 \times [-1 + 0.9(-1.9)] = -1 - 1.71 = -2.71$
+*   **Estado M**:
+    *   $Q^{\pi}(M, \text{Left}) = P(L|M,\text{Left})[R(M,\text{Left},L) + \gamma V^{\pi}(L)] = 1 \times [-1 + 0.9(-2.71)] = -1 - 2.439 = -3.439$
+    *   $Q^{\pi}(M, \text{Right}) = P(R|M,\text{Right})[R(M,\text{Right},R) + \gamma V^{\pi}(R)] = 1 \times [-1 + 0.9(-1.0)] = -1 - 0.9 = -1.9$
+*   **Estado R**:
+    *   $Q^{\pi}(R, \text{Left}) = P(M|R,\text{Left})[R(R,\text{Left},M) + \gamma V^{\pi}(M)] = 1 \times [-1 + 0.9(-1.9)] = -1 - 1.71 = -2.71$
+    *   $Q^{\pi}(R, \text{Right}) = P(T|R,\text{Right})[R(R,\text{Right},T) + \gamma V^{\pi}(T)] = 1 \times [-1 + 0.9(0)] = -1.0$
+*   **Estado T**: $Q^{\pi}(T, \text{Left}) = 0$, $Q^{\pi}(T, \text{Right}) = 0$ (Estado terminal)
+
+Observa que $V^{\pi}(s) = Q^{\pi}(s, \text{Right})$ porque la política $\pi$ *siempre* elige Right. El valor $Q^{\pi}(s, \text{Left})$ representa el valor si *forzáramos* la acción Left una vez y *luego* siguiéramos la política óptima $\pi$ (siempre Right).
+
+### Valores bajo la política exploratoria $\mu$ (80% Derecha, 20% Izquierda)
+
+Resolver el sistema de ecuaciones para $V^{\mu}$ de la sección anterior:
+1.  $V^{\mu}(L) = 0.8 [-1 + 0.9 V^{\mu}(M)] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+2.  $V^{\mu}(M) = 0.8 [-1 + 0.9 V^{\mu}(R)] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+3.  $V^{\mu}(R) = -1.0 + 0.18 V^{\mu}(M)$
+
+Sustituyendo (3) en (2):
+$V^{\mu}(M) = 0.8 [-1 + 0.9 (-1.0 + 0.18 V^{\mu}(M))] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+$V^{\mu}(M) = 0.8 [-1 - 0.9 + 0.162 V^{\mu}(M)] + 0.2 [-1 + 0.9 V^{\mu}(L)]$
+$V^{\mu}(M) = 0.8 [-1.9 + 0.162 V^{\mu}(M)] - 0.2 + 0.18 V^{\mu}(L)$
+$V^{\mu}(M) = -1.52 + 0.1296 V^{\mu}(M) - 0.2 + 0.18 V^{\mu}(L)$
+$V^{\mu}(M) (1 - 0.1296) = -1.72 + 0.18 V^{\mu}(L)$
+$0.8704 V^{\mu}(M) = -1.72 + 0.18 V^{\mu}(L)$ (Ecuación 4)
+
+De la ecuación (1):
+$V^{\mu}(L) = -0.8 + 0.72 V^{\mu}(M) - 0.2 + 0.18 V^{\mu}(L)$
+$V^{\mu}(L) (1 - 0.18) = -1.0 + 0.72 V^{\mu}(M)$
+$0.82 V^{\mu}(L) = -1.0 + 0.72 V^{\mu}(M)$
+$V^{\mu}(L) = \frac{-1.0 + 0.72 V^{\mu}(M)}{0.82}$ (Ecuación 5)
+
+Sustituyendo (5) en (4):
+$0.8704 V^{\mu}(M) = -1.72 + 0.18 \left( \frac{-1.0 + 0.72 V^{\mu}(M)}{0.82} \right)$
+$0.8704 V^{\mu}(M) = -1.72 + \frac{-0.18 + 0.1296 V^{\mu}(M)}{0.82}$
+Multiplicando por 0.82:
+$0.713728 V^{\mu}(M) = -1.4104 - 0.18 + 0.1296 V^{\mu}(M)$
+$0.713728 V^{\mu}(M) - 0.1296 V^{\mu}(M) = -1.5904$
+$0.584128 V^{\mu}(M) = -1.5904$
+$V^{\mu}(M) = \frac{-1.5904}{0.584128} \approx -2.7227$
+
+Ahora encontramos $V^{\mu}(L)$ y $V^{\mu}(R)$:
+$V^{\mu}(L) = \frac{-1.0 + 0.72 (-2.7227)}{0.82} \approx \frac{-1.0 - 1.9603}{0.82} = \frac{-2.9603}{0.82} \approx -3.6101$
+$V^{\mu}(R) = -1.0 + 0.18 (-2.7227) \approx -1.0 - 0.4901 = -1.4901$
+
+Resumen de valores V (aproximados):
+*   $V^{\mu}(L) \approx -3.61$
+*   $V^{\mu}(M) \approx -2.72$
+*   $V^{\mu}(R) \approx -1.49$
+
+(Nota: Estos valores difieren ligeramente de los -3.0, -2.3, -1.2 estimados previamente. La diferencia puede deberse a la precisión de los cálculos o a una posible simplificación en la estimación inicial. Usaremos estos valores calculados más precisos).
+
+Ahora calculemos los valores $Q^{\mu}(s,a)$:
+$Q^{\mu}(s,a) = \sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V^{\mu}(s')]$
+
+*   **Estado L**:
+    *   $Q^{\mu}(L, \text{Left}) = P(L|L,\text{Left})[R(L,\text{Left},L) + \gamma V^{\mu}(L)] \approx 1 \times [-1 + 0.9(-3.61)] = -1 - 3.249 = -4.249$
+    *   $Q^{\mu}(L, \text{Right}) = P(M|L,\text{Right})[R(L,\text{Right},M) + \gamma V^{\mu}(M)] \approx 1 \times [-1 + 0.9(-2.72)] = -1 - 2.448 = -3.448$
+*   **Estado M**:
+    *   $Q^{\mu}(M, \text{Left}) = P(L|M,\text{Left})[R(M,\text{Left},L) + \gamma V^{\mu}(L)] \approx 1 \times [-1 + 0.9(-3.61)] = -1 - 3.249 = -4.249$
+    *   $Q^{\mu}(M, \text{Right}) = P(R|M,\text{Right})[R(M,\text{Right},R) + \gamma V^{\mu}(R)] \approx 1 \times [-1 + 0.9(-1.49)] = -1 - 1.341 = -2.341$
+*   **Estado R**:
+    *   $Q^{\mu}(R, \text{Left}) = P(M|R,\text{Left})[R(R,\text{Left},M) + \gamma V^{\mu}(M)] \approx 1 \times [-1 + 0.9(-2.72)] = -1 - 2.448 = -3.448$
+    *   $Q^{\mu}(R, \text{Right}) = P(T|R,\text{Right})[R(R,\text{Right},T) + \gamma V^{\mu}(T)] = 1 \times [-1 + 0.9(0)] = -1.0$
+*   **Estado T**: $Q^{\mu}(T, \text{Left}) = 0$, $Q^{\mu}(T, \text{Right}) = 0$
+
+Verificación: Podemos comprobar si $V^{\mu}(s)$ es igual a la esperanza de $Q^{\mu}(s,a)$ bajo $\mu$:
+$V^{\mu}(s) \approx 0.8 Q^{\mu}(s,\text{Right}) + 0.2 Q^{\mu}(s,\text{Left})$
+*   $V^{\mu}(L) \approx 0.8(-3.448) + 0.2(-4.249) = -2.7584 - 0.8498 = -3.6082 \approx -3.61$ (Coincide)
+*   $V^{\mu}(M) \approx 0.8(-2.341) + 0.2(-4.249) = -1.8728 - 0.8498 = -2.7226 \approx -2.72$ (Coincide)
+*   $V^{\mu}(R) \approx 0.8(-1.0) + 0.2(-3.448) = -0.8 - 0.6896 = -1.4896 \approx -1.49$ (Coincide)
+
+Los cálculos son consistentes. La política exploratoria $\mu$ resulta en valores de estado y acción peores (más negativos) que la política óptima $\pi$, ya que a veces toma la acción Left, lo que retrasa la llegada a la meta T.
 
 ---
 
@@ -137,7 +256,7 @@ Supongamos que seguimos la política exploratoria $\mu$ y estamos en el estado M
    $Q^{\mu}(M, \text{Right}) \leftarrow -1.0 + 0.1 [-0.9]$
    $Q^{\mu}(M, \text{Right}) \leftarrow -1.0 - 0.09 = -1.09$
 
-Después de muchas iteraciones, $Q^{\mu}(M, \text{Right})$ convergerá a $Q^{\mu}(M, \text{Right}) \approx -2.1$, el valor real bajo la política $\mu$.
+Después de muchas iteraciones, $Q^{\mu}(M, \text{Right})$ convergerá a $Q^{\mu}(M, \text{Right}) \approx -2.34$, el valor real bajo la política $\mu$ calculado en la sección 6.
 
 **Importante**: En SARSA, usamos la acción $a_{t+1}$ que realmente tomaremos según $\mu$, incluso si no es la óptima. Esto hace que SARSA aprenda el valor real de seguir $\mu$, incluyendo sus movimientos exploratorios.
 
@@ -162,7 +281,7 @@ Misma situación que antes, seguimos $\mu$ pero aprenderemos valores Q óptimos 
    $Q^*(M, \text{Right}) \leftarrow -1.0 + 0.1 [-0.9]$
    $Q^*(M, \text{Right}) \leftarrow -1.0 - 0.09 = -1.09$
 
-Después de muchas iteraciones, $Q^*(M, \text{Right})$ convergerá a $Q^*(M, \text{Right}) = Q^{\pi}(M, \text{Right}) = -1.9$, el valor óptimo.
+Después de muchas iteraciones, $Q^*(M, \text{Right})$ convergerá a $Q^*(M, \text{Right}) = Q^{\pi}(M, \text{Right}) = -1.9$, el valor óptimo calculado en la sección 6.
 
 **Diferencia clave**: En Q-learning, usamos $\max_a Q^*(s_{t+1}, a)$ para la actualización, no la acción que realmente tomaremos según $\mu$. Esto permite que Q-learning aprenda los valores Q óptimos $Q^*$ (que corresponden a la política óptima $\pi$) independientemente de qué política estamos siguiendo.
 
@@ -224,7 +343,7 @@ Entender cuándo usar cada enfoque es crucial para aplicar RL de manera efectiva
    - On-policy aprende a optimizar la política que realmente estamos usando
 
 4. **Ideal para problemas donde exploración y explotación están balanceadas**:
-   - En nuestro ejemplo del corredor: SARSA aprendería que, bajo $\mu$, $Q^{\mu}(M, \text{Right}) \approx -2.1$, reconociendo que a veces tomaremos Left
+   - En nuestro ejemplo del corredor: SARSA aprendería que, bajo $\mu$, $Q^{\mu}(M, \text{Right}) \approx -2.34$, reconociendo que a veces tomaremos Left
 
 ### Ventajas del Aprendizaje Off-Policy (Q-learning)
 
@@ -259,32 +378,37 @@ En nuestro ejemplo del corredor, la diferencia de rendimiento no es dramática (
 
 ## 10. Visualización Comparativa de Funciones de Valor
 
+Aquí presentamos los valores V y Q calculados con mayor precisión en la Sección 6.
+
 ```text
 Valores de Estado V:
 [L] --- [M] --- [R] --- [T]
--2.71  -1.9   -1.0    0     (V^π - Política Óptima)
--3.0   -2.3   -1.2    0     (V^μ - Política Exploratoria)
+-2.71  -1.90  -1.00    0     (V^π - Política Óptima)
+-3.61  -2.72  -1.49    0     (V^μ - Política Exploratoria)
 ```
+*Nota: $V(s)$ representa el retorno esperado total (suma de recompensas descontadas) comenzando en $s$ y siguiendo la política correspondiente.*
 
 ```text
-Valores Q para la política π:
+Valores Q para la política óptima π:
 Estado | Q^π(s,Left) | Q^π(s,Right)
 -------|-------------|-------------
-  L    |    -2.71    |    -2.71
-  M    |    -2.71    |    -1.9
-  R    |    -2.71    |    -1.0
-  T    |      0      |      0
+  L    |   -3.439    |   -2.710
+  M    |   -3.439    |   -1.900
+  R    |   -2.710    |   -1.000
+  T    |     0       |     0
 ```
+*Nota: $Q^{\pi}(s,a)$ es el retorno esperado si se toma la acción $a$ en el estado $s$ y luego se sigue la política $\pi$. Como $\pi$ siempre elige 'Right', $V^{\pi}(s) = Q^{\pi}(s, \text{Right})$.*
 
 ```text
-Valores Q para la política μ:
+Valores Q para la política exploratoria μ:
 Estado | Q^μ(s,Left) | Q^μ(s,Right)
 -------|-------------|-------------
-  L    |    -3.0     |    -2.8
-  M    |    -3.0     |    -2.1
-  R    |    -2.5     |    -1.2
-  T    |      0      |      0
+  L    |   -4.249    |   -3.448
+  M    |   -4.249    |   -2.341
+  R    |   -3.448    |   -1.000
+  T    |     0       |     0
 ```
+*Nota: $Q^{\mu}(s,a)$ es el retorno esperado si se toma la acción $a$ en el estado $s$ y luego se sigue la política $\mu$. Aquí, $V^{\mu}(s) = 0.8 Q^{\mu}(s, \text{Right}) + 0.2 Q^{\mu}(s, \text{Left})$. Los valores son peores que con $\pi$ debido a la exploración (acción 'Left').*
 
 ---
 
