@@ -1,0 +1,55 @@
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_rewards(rewards, smoothing_window=20, label=None):
+    """
+    Grafica la recompensa total por episodio y su media móvil.
+    """
+    rewards = np.array(rewards)
+    plt.figure(figsize=(8,4))
+    plt.plot(rewards, alpha=0.4, label='Recompensa')
+    if len(rewards) >= smoothing_window:
+        smoothed = np.convolve(rewards, np.ones(smoothing_window)/smoothing_window, mode='valid')
+        plt.plot(range(smoothing_window-1, len(rewards)), smoothed, label=f'Media móvil ({smoothing_window})')
+    if label:
+        plt.title(label)
+    plt.xlabel('Episodio')
+    plt.ylabel('Recompensa total')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+def plot_policy_q_values(q_table, env_shape=(4,12), action_names=['→','↓','←','↑']):
+    """
+    Visualiza la política (flechas) y los heatmaps de valores Q para CliffWalking.
+    q_table: matriz (n_estados, n_acciones)
+    env_shape: (filas, columnas) del entorno
+    action_names: nombres de las acciones (por defecto: derecha, abajo, izquierda, arriba)
+    """
+    n_states, n_actions = q_table.shape
+    grid = np.arange(n_states).reshape(env_shape)
+    best_actions = np.argmax(q_table, axis=1).reshape(env_shape)
+    action_arrows = np.array(action_names)[best_actions]
+
+    # Política: flechas
+    plt.figure(figsize=(env_shape[1], env_shape[0]))
+    for i in range(env_shape[0]):
+        for j in range(env_shape[1]):
+            plt.text(j, i, action_arrows[i, j], ha='center', va='center', fontsize=16)
+    plt.xlim(-0.5, env_shape[1]-0.5)
+    plt.ylim(env_shape[0]-0.5, -0.5)
+    plt.title('Política aprendida (acción óptima por celda)')
+    plt.grid(True)
+    plt.show()
+
+    # Heatmaps de Q para cada acción
+    fig, axes = plt.subplots(1, n_actions, figsize=(4*n_actions, 4))
+    for a in range(n_actions):
+        q_grid = q_table[:, a].reshape(env_shape)
+        ax = axes[a] if n_actions > 1 else axes
+        im = ax.imshow(q_grid, cmap='coolwarm', origin='upper')
+        ax.set_title(f'Q para acción {action_names[a]}')
+        plt.colorbar(im, ax=ax)
+    plt.tight_layout()
+    plt.show() 

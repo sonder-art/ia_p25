@@ -1,0 +1,89 @@
+´´´
+import numpy as np
+import random
+
+class BaseAgent:
+    """
+    Clase base para agentes de RL con Q-table.
+    Incluye inicialización, selección de acción ε-greedy y decaimiento de epsilon.
+    """
+    def __init__(self, env, learning_rate=0.1, gamma=0.99, epsilon_start=1.0, epsilon_decay=0.999, epsilon_min=0.01):
+        self.env = env
+        self.lr = learning_rate
+        self.gamma = gamma
+        self.epsilon = epsilon_start
+        self.epsilon_decay = epsilon_decay
+        self.epsilon_min = epsilon_min
+        # Inicializa la Q-table con ceros: (número de estados, número de acciones)
+        self.q_table = np.zeros((env.observation_space.n, env.action_space.n))
+
+    def choose_action(self, state):
+        """
+        Selecciona una acción usando política ε-greedy.
+        Con probabilidad epsilon explora (acción aleatoria), si no explota (mejor acción).
+        """
+        if random.uniform(0, 1) < self.epsilon:
+            return self.env.action_space.sample()  # Explora
+        else:
+            return self.get_best_action(state)     # Explota
+
+    def get_best_action(self, state):
+        """
+        Devuelve la mejor acción (greedy) para un estado dado.
+        Si hay empate, desempata aleatoriamente.
+        """
+        q_values = self.q_table[state]
+        max_q = np.max(q_values)
+        # Desempate aleatorio entre acciones con el mismo valor máximo
+        best_actions = np.where(q_values == max_q)[0]
+        return np.random.choice(best_actions)
+
+    def decay_epsilon(self):
+        """
+        Aplica decaimiento exponencial a epsilon, sin bajar de epsilon_min.
+        """
+        self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
+
+    def learn(self, *args, **kwargs):
+        """
+        Método abstracto: debe ser implementado por subclases.
+        """
+        raise NotImplementedError("El método learn debe ser implementado por la subclase.")
+
+class QLearningAgent(BaseAgent):
+    """
+    Implementación de Q-Learning (off-policy).
+    Actualiza la Q-table usando la recompensa y el valor máximo del siguiente estado.
+    """
+    def learn(self, state, action, reward, next_state, terminated):
+        if terminated:
+            target = reward
+        else:
+            # Valor objetivo: recompensa + gamma * max(Q(s', a'))
+            max_next_q = np.max(self.q_table[next_state])
+            target = reward + self.gamma * max_next_q
+        # TD error
+        td_error = target - self.q_table[state, action]
+        # Actualización Q-Learning
+        self.q_table[state, action] += self.lr * td_error
+
+class SarsaAgent(BaseAgent):
+    """
+    Implementación de SARSA (on-policy).
+    Actualiza la Q-table usando la recompensa y el valor de la acción realmente tomada en el siguiente estado.
+    """
+    def learn(self, state, action, reward, next_state, next_action, terminated):
+        if terminated:
+            target = reward
+        else:
+            # Valor objetivo: recompensa + gamma * Q(s', a') donde a' es la acción realmente tomada
+            next_q = self.q_table[next_state, next_action]
+            target = reward + self.gamma * next_q
+        # TD error
+        td_error = target - self.q_table[state, action]
+        # Actualización SARSA
+        self.q_table[state, action] += self.lr * td_error
+
+# SarsaAgent se implementará más adelante 
+
+'''
