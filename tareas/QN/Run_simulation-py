@@ -1,0 +1,121 @@
+
+import matplotlib
+matplotlib.use('Agg')
+
+import gymnasium as gym
+import matplotlib.pyplot as plt
+from agents import QLearningAgent, SarsaAgent
+import numpy as np
+from visualizations import plot_rewards, plot_policy_q_values
+import os
+
+# Permite modificar estos parámetros manualmente
+AGENT_TYPE = 'qlearning'  # 'qlearning' o 'sarsa'
+ENV_NAME = 'CliffWalking-v0'
+EPISODES = 500
+LEARNING_RATE = 0.1
+GAMMA = 0.99
+EPSILON_START = 1.0
+EPSILON_DECAY = 0.999
+EPSILON_MIN = 0.01
+MAX_STEPS = 500
+
+
+def run_training_episode(env, agent, max_steps=500):
+    state, _ = env.reset()
+    action = agent.choose_action(state)
+    total_reward = 0
+    for _ in range(max_steps):
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        total_reward += reward
+        if isinstance(agent, QLearningAgent):
+            agent.learn(state, action, reward, next_state, terminated)
+            next_action = agent.choose_action(next_state)
+        elif isinstance(agent, SarsaAgent):
+            next_action = agent.choose_action(next_state)
+            agent.learn(state, action, reward, next_state, next_action, terminated)
+        else:
+            raise ValueError("Tipo de agente no soportado")
+        state, action = next_state, next_action
+        if terminated or truncated:
+            break
+    agent.decay_epsilon()
+    return total_reward
+
+
+def evaluate_policy(env, agent, episodes=5, max_steps=500):
+    """Evalúa la política aprendida (sin exploración) y muestra el recorrido."""
+    rewards = []
+    for _ in range(episodes):
+        state, _ = env.reset()
+        total_reward = 0
+        for _ in range(max_steps):
+            action = agent.get_best_action(state)
+            next_state, reward, terminated, truncated, _ = env.step(action)
+            total_reward += reward
+            state = next_state
+            if terminated or truncated:
+                break
+        rewards.append(total_reward)
+    print(f"Recompensas de evaluación: {rewards}")
+
+
+def get_next_experiment_dir(base_dir='resultados'):
+    """Busca el siguiente número de experimento disponible y devuelve la ruta."""
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
+    existing = [d for d in os.listdir(base_dir) if d.isdigit()]
+    nums = [int(d) for d in existing]
+    next_num = max(nums) + 1 if nums else 1
+    exp_dir = os.path.join(base_dir, str(next_num))
+    os.makedirs(exp_dir, exist_ok=True)
+    return exp_dir
+
+
+def main():
+    # Crear carpeta de resultados y subcarpeta serial para este experimento
+    results_dir = get_next_experiment_dir('resultados')
+
+    # Selección de entorno y agente
+    env = gym.make(ENV_NAME)
+    if AGENT_TYPE == 'qlearning':
+        agent = QLearningAgent(env, learning_rate=LEARNING_RATE, gamma=GAMMA,
+                               epsilon_start=EPSILON_START, epsilon_decay=EPSILON_DECAY, epsilon_min=EPSILON_MIN)
+    elif AGENT_TYPE == 'sarsa':
+        agent = SarsaAgent(env, learning_rate=LEARNING_RATE, gamma=GAMMA,
+                           epsilon_start=EPSILON_START, epsilon_decay=EPSILON_DECAY, epsilon_min=EPSILON_MIN)
+    else:
+        raise ValueError("AGENT_TYPE debe ser 'qlearning' o 'sarsa'")
+
+    rewards = []
+    for ep in range(EPISODES):
+        ep_reward = run_training_episode(env, agent, max_steps=MAX_STEPS)
+        rewards.append(ep_reward)
+        if (ep+1) % 100 == 0:
+            print(f"Episodio {ep+1}/{EPISODES} - Recompensa: {ep_reward:.1f} - Epsilon: {agent.epsilon:.3f}")
+
+    # Evaluación de la política aprendida
+    eval_env = gym.make(ENV_NAME, render_mode=None)  # Cambia a 'human' para ver el entorno
+    print("\nEvaluando la política aprendida...")
+    evaluate_policy(eval_env, agent, episodes=5, max_steps=MAX_STEPS)
+
+    # Después de entrenar:
+    plot_rewards(rewards, smoothing_window=20, label=f'Recompensa - {AGENT_TYPE.upper()}')
+    plt.savefig(os.path.join(results_dir, 'recompensas.png'))  # para la curva de recompensas
+    plt.close()
+    plot_policy_q_values(agent.q_table, env_shape=(4,12))
+    plt.savefig(os.path.join(results_dir, 'politica.png'))     # para la política aprendida
+    plt.close()
+
+    # Heatmaps de acciones
+    for a in range(env.action_space.n):
+        plt.imshow(agent.q_table[:, a].reshape(4, 12), cmap='viridis')
+        plt.title(f'Heatmap de acción {a}')
+        plt.savefig(os.path.join(results_dir, f'heatmap_accion_{a}.png'))  # para cada heatmap de acción
+        plt.close()
+
+    plt.savefig(os.path.join(results_dir, 'heatmaps_q.png'))
+    plt.close()
+
+if __name__ == "__main__":
+    main() 
